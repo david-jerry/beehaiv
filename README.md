@@ -18,6 +18,8 @@
   - [API Documentation](#api-documentation)
   - [Contributing](#contributing)
   - [License](#license)
+  - [Deploying](#deploying)
+  - [Follow this tutorial to deploy online:](#follow-this-tutorial-to-deploy-online)
 
 ## Features
 
@@ -173,6 +175,10 @@ We welcome contributions to improve our platform. Please fork the repository and
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
+## Deploying
+
+Follow this [tutorial](https://www.pedroalonso.net/blog/deploying-nextjs-vps-using-dokku) to deploy online:
 ---
 
 For further enquiries and collaborations please visit [My Website](https://jeremiahedavid.online) or [Bytestream's Official Website](https://bytestreaminnovators.ltd).
