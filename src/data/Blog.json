@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "a-guide-to-non-dilutive-financing-for-startups-and-small-business",
+    "title": "A Guide to Non-Dilutive Financing for Startups and Small Businesses",
+    "author": "BeeHaiv Technologies, Inc.",
+    "publishedDate": "2023-09-18",
+    "createdDate": "2024-09-01",
+    "category": "Article",
+    "featured": true,
+    "image": "/blog/featured-1.webp",
+    "content": "# Understanding Next.js: The Ultimate Guide\n\n![Next.js Guide](/images/blog/nextjs-guide.jpg)\n\n## Introduction\n\nNext.js is a powerful React framework that enables server-side rendering and static site generation for your React applications. In this guide, we'll explore what makes Next.js unique, how it works, and why it's an excellent choice for building modern web applications.\n\n## Why Choose Next.js?\n\nNext.js provides a great developer experience with all the features you need for production:\n\n- **Server-side rendering** (SSR) and **static site generation** (SSG).\n- Built-in **routing** based on file system.\n- **API routes** for building backend services.\n- Optimized for **performance** with automatic code splitting.\n\n## Getting Started\n\nTo get started with Next.js, you'll need Node.js installed. Then you can create a new Next.js application using the following command:\n\n```bash\nnpx create-next-app my-nextjs-app\n```\n\nOnce created, navigate to the project directory and start the development server:\n\n```bash\ncd my-nextjs-app\nnpm run dev\n```\n\n## Key Features\n\n1. **File-based Routing**: Each page in Next.js corresponds to a file in the `pages` directory.\n2. **API Routes**: You can create your backend logic directly in the Next.js application.\n3. **Built-in CSS and Sass support**: Add global styles or component-level CSS.\n\n## Conclusion\n\nNext.js is an incredibly flexible and powerful tool for building modern web applications. Whether you're building a simple static site or a complex application, Next.js has you covered.\n\nIf you're just starting with Next.js, take it one step at a time, and don't hesitate to refer to the official [Next.js documentation](https://nextjs.org/docs) for more information.\n\n## About the Author\n\n![Jane Doe](/images/authors/jane-doe.jpg)\n\nJane Doe is a seasoned web developer with expertise in JavaScript and modern web frameworks. She loves writing about technology and sharing her knowledge with the community.\n"
+  }
+]
