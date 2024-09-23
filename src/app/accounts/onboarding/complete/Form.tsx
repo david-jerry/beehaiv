@@ -518,7 +518,7 @@ export default function BusinessForm() {
                   <Input
                     className="w-full"
                     type="url"
-                    placeholder="eg: https://companywebsitename.com"
+                    placeholder="eg: https://website.com"
                     {...field}
                   />
                 </FormControl>
