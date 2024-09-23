@@ -45,7 +45,7 @@ const formSchema = z.object({
 export default function BasicForm() {
   const { pending } = useFormStatus();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, updateUserBio } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,17 +57,7 @@ export default function BasicForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const res = await updateUserAction(values, user!.uid);
-    if (res.error) {
-      toast.error("Validation Error", {
-        description: res.error,
-      });
-    } else {
-      toast.success("Validation Successful", {
-        description: "You just updated your information",
-      });
-      router.push("/accounts/onboarding/business-detail");
-    }
+    await updateUserBio(values);
   };
 
   return (

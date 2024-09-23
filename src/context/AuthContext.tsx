@@ -8,11 +8,38 @@ import { loginAction, signupAction } from "@/actions/auth-actions";
 import React from "react";
 import { toast } from "sonner";
 import { baseUrl } from "@/utils/global";
+import {
+  updateUserAction,
+  updateUserAddressAction,
+} from "@/actions/user-actions";
 
 // Define the form schema using Zod
 const loginFormSchema = z.object({
   email: z.string().min(2).max(50),
   password: z.string().min(1, "You must provide a password"),
+});
+
+const userFormSchema = z.object({
+  first_name: z.string().min(2).max(255),
+  last_name: z.string().min(2).max(255),
+  country: z.string().min(2).max(255),
+  phone_number: z
+    .string()
+    .min(2)
+    .max(14)
+    .regex(/^\+\d{1,3}\d{10}$/, {
+      message:
+        "Phone number must start with +(country code) and be followed by 10 digits.",
+    }),
+});
+
+const userAddressSchema = z.object({
+  country: z.string().min(2).max(255),
+  address: z.string().min(2).max(255),
+  apartment: z.string().min(2).max(14),
+  city: z.string().min(2).max(255),
+  state: z.string().min(2).max(255),
+  zip: z.string().min(5).max(5),
 });
 
 // Define the context value type
@@ -23,6 +50,8 @@ interface AuthContextType {
   register: (data: z.infer<typeof loginFormSchema>) => Promise<void>;
   refreshAccess: () => Promise<void>;
   getUser: () => Promise<void>;
+  updateUserBio: (data: z.infer<typeof userFormSchema>) => Promise<void>;
+  updateUserAddress: (data: z.infer<typeof userAddressSchema>) => Promise<void>;
   error: string | null;
 }
 
@@ -119,9 +148,65 @@ export const AuthProvider = ({
     }
   };
 
+  const updateUserBio = async (data: z.infer<typeof userFormSchema>) => {
+    try {
+      const validatedData = userFormSchema.parse(data);
+      const resData = await updateUserAction(validatedData, user!.uid);
+
+      if (resData.data) {
+        toast.success("Validation Successful", {
+          description: "You just updated your information",
+        });
+        setUser(resData.data);
+        router.push("/accounts/onboarding/business-detail");
+      } else {
+        setError(resData.error);
+        toast.error("Validation Error", {
+          description: resData.error,
+        });
+        router.refresh();
+      }
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const updateUserAddress = async (data: z.infer<typeof userAddressSchema>) => {
+    try {
+      const validatedData = userAddressSchema.parse(data);
+      const resData = await updateUserAddressAction(validatedData, user!.uid);
+
+      if (resData.data) {
+        toast.success("Validation Successful", {
+          description: "We just updated your information",
+        });
+        setUser(resData.data);
+        router.push("/accounts/onboarding/complete");
+      } else {
+        toast.error("Validation Error", {
+          description: resData.error,
+        });
+        setError(resData.error);
+        router.refresh();
+      }
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, register, refreshAccess, getUser, error }}
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        refreshAccess,
+        getUser,
+        updateUserBio,
+        updateUserAddress,
+        error,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -43,7 +43,7 @@ export const updateUserAction = async (data: z.infer<typeof userFormSchema>, use
     const validatedData = userFormSchema.parse(data);
 
     // Perform the request to signup a new user
-    const response = await axios.post(
+    const response = await axios.patch(
       `${baseUrl}/users/${user_uid}`,
       validatedData
     );
@@ -75,7 +75,7 @@ export const updateUserAddressAction = async (
     const validatedData = userAddressSchema.parse(data);
 
     // Perform the request to signup a new user
-    const response = await axios.post(
+    const response = await axios.patch(
       `${baseUrl}/users/${user_uid}`,
       validatedData
     );
