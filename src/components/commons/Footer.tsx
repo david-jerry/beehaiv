@@ -255,7 +255,7 @@ export default function Footer() {
             using an IntraFi service are titled, and deposit account records are
             maintained, in accordance with FDIC regulations for pass-through
             coverage. Although deposits are placed in increments that do not
-            exceed the FDIC standard maximum deposit insurance amount ("SMDIA")
+            exceed the FDIC standard maximum deposit insurance amount (&quot;SMDIA&quot;)
             at any one bank, a depositor&apos;s balances at the institution that
             places deposits may be uninsured. The depositor must make any
             necessary arrangements to protect such balances consistent with
