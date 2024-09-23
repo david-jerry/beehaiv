@@ -93,7 +93,7 @@ export default function Services() {
         </p>
         <div className="w-full aspect-square">
           <Image
-            src={"/commons/integrations.svg"}
+            src={"/commons/Integrations.svg"}
             width={480}
             height={480}
             className="w-full object-cover"
@@ -104,7 +104,8 @@ export default function Services() {
       <div className="flex flex-col space-y-3 w-full">
         <strong className="font-bold block">Spend Controls</strong>
         <p className="font-normal">
-          Create custom-branded invoices with your company&apos;s logo and colors.
+          Create custom-branded invoices with your company&apos;s logo and
+          colors.
         </p>
         <div className="w-full aspect-square">
           <Image
