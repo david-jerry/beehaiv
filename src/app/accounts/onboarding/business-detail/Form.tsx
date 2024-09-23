@@ -25,7 +25,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { updateUserAction, updateUserAddressAction } from "@/actions/user-actions";
+import { updateUserAddressAction } from "@/actions/user-actions";
+import { useFormStatus } from "react-dom";
 
 const formSchema = z.object({
   country: z.string().min(2).max(255),
@@ -37,6 +38,7 @@ const formSchema = z.object({
 });
 
 export default function BusinessForm() {
+  const { pending } = useFormStatus();
   const { user } = useAuth();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -540,12 +542,12 @@ export default function BusinessForm() {
             onClick={backRoute}
             className=""
             variant={"outline"}
-            type="button"
+            type="button" disabled={pending}
           >
             Back
           </Button>
-          <Button className="md:col-span-2" type="submit">
-            Continue
+          <Button disabled={pending} className="md:col-span-2" type="submit">
+            {pending ? "Submitting..." : "Continue"}
           </Button>
         </div>
       </form>

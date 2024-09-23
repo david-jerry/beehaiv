@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useFormStatus } from "react-dom";
 import { z } from "zod";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const { login, error } = useAuth();
+  const { pending } = useFormStatus();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,7 +82,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Submit"}</Button>
       </form>
     </Form>
   );

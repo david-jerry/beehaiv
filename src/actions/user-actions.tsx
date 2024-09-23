@@ -27,6 +27,15 @@ const userAddressSchema = z.object({
   zip: z.string().min(5).max(5),
 });
 
+const businessFormSchema = z.object({
+  business_name: z.string().min(2).max(255),
+  deposit_size: z.string().min(2).max(255),
+  tax_id: z.string().min(2).max(14),
+  asset_source_description: z.string().min(6).max(6),
+  company_industry: z.string().min(2).max(255),
+  website: z.string().min(2).max(255),
+  description: z.string().min(5).max(255),
+});
 
 export const updateUserAction = async (data: z.infer<typeof userFormSchema>, user_uid: string) => {
   try {
@@ -73,6 +82,38 @@ export const updateUserAddressAction = async (
 
     // Check if the response is successful
     if (response.status === 200) {
+      return {
+        data: response.data,
+      };
+    } else {
+      return {
+        error: response?.data.message,
+      };
+    }
+  } catch (error: any) {
+    // Handle the error and return the message
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+
+export const createBusinessAction = async (
+  data: z.infer<typeof businessFormSchema>,
+) => {
+  try {
+    // Validate the data using the schema
+    const validatedData = businessFormSchema.parse(data);
+
+    // Perform the request to signup a new user
+    const response = await axios.post(
+      `${baseUrl}/businesses`,
+      validatedData
+    );
+
+    // Check if the response is successful
+    if (response.status === 201) {
       return {
         data: response.data,
       };

@@ -18,6 +18,9 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import useGeneralStore from "@/hooks/generalStore";
 import { useAuth } from "@/context/AuthContext";
+import { useFormStatus } from "react-dom";
+import { createBusinessAction } from "@/actions/user-actions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   business_name: z.string().min(2).max(255),
@@ -30,6 +33,7 @@ const formSchema = z.object({
 });
 
 export default function BusinessForm() {
+  const { pending } = useFormStatus();
   const { user } = useAuth();
 
   const router = useRouter();
@@ -65,8 +69,13 @@ export default function BusinessForm() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.info(values);
-    router.push("/dashboard");
+    const res = await createBusinessAction(values);
+    if (res.data) {
+      toast.success("Complete", {
+        description: "You have completed your onboarding process",
+      });
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -220,11 +229,12 @@ export default function BusinessForm() {
             className=""
             variant={"outline"}
             type="button"
+            disabled={pending}
           >
             Back
           </Button>
-          <Button className="md:col-span-2" type="submit">
-            Continue
+          <Button className="md:col-span-2" type="submit" disabled={pending}>
+            {pending ? "Submitting..." : "Complete Onboarding"}
           </Button>
         </div>
       </form>

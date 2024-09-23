@@ -20,6 +20,7 @@ import { signupAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import ErrorMessage from "@/components/commons/ErrorMessage";
+import { useFormStatus } from "react-dom";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -27,7 +28,9 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
-  const {register, error} = useAuth();
+  const { pending } = useFormStatus();
+
+  const { register, error } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -83,7 +86,9 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Signup</Button>
+        <Button disabled={pending} type="submit">
+          {pending ? "Submitting..." : "Signup"}
+        </Button>
       </form>
     </Form>
   );

@@ -43,8 +43,6 @@ export const AuthProvider = ({
       const validatedData = loginFormSchema.parse(data);
       const resData: any = await loginAction(validatedData);
 
-      console.log("AuthContext Response: ", resData);
-
       if (!resData.data.error) {
         axios.defaults.headers.common[
           "Authorization"
@@ -78,19 +76,18 @@ export const AuthProvider = ({
       const validatedData = loginFormSchema.parse(data);
       const resData = await signupAction(validatedData);
 
-      console.log("AuthContext Response: ", resData);
       if (resData.data) {
         toast.success("Registration Successful", {
           description: resData!.data.message,
-          onDismiss: () => router.push("/accounts/confirm-code"),
         });
         setUser(resData.data.user);
+        router.push("/accounts/confirm-code");
       } else {
         toast.success("Registration Failed", {
           description: resData!.error.message,
-          onDismiss: () => router.refresh(),
         });
         setError(resData.error.message);
+        router.refresh();
       }
     } catch (error: any) {
       setError(error.message);

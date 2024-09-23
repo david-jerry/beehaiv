@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { verificationCodeAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
+import { useFormStatus } from "react-dom";
 
 // Define the form schema
 const formSchema = z.object({
@@ -33,6 +34,7 @@ function SearchParamsFormWrapper() {
 
 // The actual form component receives the code from the wrapper
 function ConfirmCodeForm({ code }: { code: string }) {
+  const { pending } = useFormStatus();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -80,7 +82,7 @@ function ConfirmCodeForm({ code }: { code: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Confirm</Button>
+        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Confirm"}</Button>
       </form>
     </Form>
   );

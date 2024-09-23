@@ -139,18 +139,24 @@ export const signupAction = async (data: z.infer<typeof signUpFormSchema>) => {
     );
 
     // Check if the response is successful
-    if (response.status === 200) {
-      const userEmail = response.data.user.email;
+    if (response.status === 201 || response.status === 200) {
+      const userEmail = validatedData.email;
       const code = response.data.code;
 
       // Send welcome email via Resend
-      await resend.emails.send({
+      const regEmail = await resend.emails.send({
         from: "Beehaiv <authority@beehaiv.jeremiahedavid.online>",
         to: userEmail,
         subject: "Email Verification",
         text: `Verify your email address with this code ${code}`,
         react: VerifyEmail({ verificationCode: code }),
       });
+
+      if (regEmail.error) {
+        return {
+          error: regEmail.error.message
+        }
+      }
 
       return {
         data: response.data.message,

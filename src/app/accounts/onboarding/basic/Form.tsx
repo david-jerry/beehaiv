@@ -26,6 +26,7 @@ import {
 import { updateUserAction } from "@/actions/user-actions";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { useFormStatus } from "react-dom";
 
 const formSchema = z.object({
   first_name: z.string().min(2).max(255),
@@ -42,6 +43,7 @@ const formSchema = z.object({
 });
 
 export default function BasicForm() {
+  const { pending } = useFormStatus();
   const router = useRouter();
   const { user } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -483,7 +485,7 @@ export default function BasicForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Continue</Button>
+        <Button type="submit">{pending ? "Submitting..." : "Continue"}</Button>
       </form>
     </Form>
   );
