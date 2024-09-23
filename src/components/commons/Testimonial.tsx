@@ -19,7 +19,7 @@ export default function Testimonial({
   return (
     <section className="w-screen bg-gray-100 py-16">
       <div className="container grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex flex-col space-y-6 justify-center">
+        <div className="order-2 lg:order-1 flex flex-col space-y-6 justify-center">
           {image.length > 1 && (
             <Image
               src={image}
@@ -40,13 +40,13 @@ export default function Testimonial({
             be the same.
           </p>
         </div>
-        <div className="w-full">
+        <div className="order-1 lg:order-2 w-full">
           <Image
             src={ceo}
             alt="footprint-ceo"
             width={620}
             height={620}
-            className="object-fill md:object-cover lg:object-fill w-fit h-full"
+            className="object-fill md:object-cover lg:object-fill w-full lg:w-fit h-full"
           />
         </div>
       </div>
