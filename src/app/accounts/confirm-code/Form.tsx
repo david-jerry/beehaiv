@@ -50,9 +50,9 @@ function ConfirmCodeForm({ code }: { code: string }) {
       toast.error("Verification Error", {
         description: res!.error,
       });
-    } else if (res!.message) {
-      toast.success("Verification", {
-        description: res!.message,
+    } else if (res!.data) {
+      toast.success("Verification Successful", {
+        description: res.verified_already ? res!.data : "Already verified.",
       });
       router.push("/accounts/onboarding");
     }

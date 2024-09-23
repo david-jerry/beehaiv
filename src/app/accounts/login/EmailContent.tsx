@@ -18,7 +18,7 @@ interface AWSVerifyEmailProps {
   verificationCode?: string;
 }
 
-const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "";
+const baseUrl = process.env.BASE_URL ? `${process.env.BASE_URL}` : "";
 
 export default function VerifyEmail({ verificationCode }: AWSVerifyEmailProps) {
   return (
@@ -102,9 +102,10 @@ export default function VerifyEmail({ verificationCode }: AWSVerifyEmailProps) {
               </Heading>
               <Text className={"text-sm font-normal"}>
                 Thanks for starting the new Beehaiv account creation process. We
-                want to make sure it&apos;s really you. Please enter the following
-                verification code when prompted. If you don&apos;t want to
-                complete your account creation, you can ignore this message.
+                want to make sure it&apos;s really you. Please enter the
+                following verification code when prompted. If you don&apos;t
+                want to complete your account creation, you can ignore this
+                message.
               </Text>
               <Section
                 className={
@@ -121,12 +122,12 @@ export default function VerifyEmail({ verificationCode }: AWSVerifyEmailProps) {
             </Section>
             <hr />
             <Section className={"text-sm"}>
-              <Text className={"font-normal"}>
+              <Text className={"font-normal text-center"}>
                 You can copy click this link also to{" "}
               </Text>
-              <Section className="py-4">
+              <Section className="py-4 w-fit mx-auto">
                 <Button
-                  href={`${baseUrl}/accounts/confirm-code?code=${verificationCode}`}
+                  href={`${baseUrl}/accounts/confirm-code?code=${encodeURIComponent(verificationCode!)}`}
                   target="_blank"
                   className={
                     "text-background bg-foreground rounded-lg p-2 font-semibold w-full"

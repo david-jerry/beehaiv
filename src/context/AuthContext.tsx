@@ -84,9 +84,9 @@ export const AuthProvider = ({
         router.push("/accounts/confirm-code");
       } else {
         toast.success("Registration Failed", {
-          description: resData!.error.message,
+          description: resData!.error,
         });
-        setError(resData.error.message);
+        setError(resData.error);
         router.refresh();
       }
     } catch (error: any) {
