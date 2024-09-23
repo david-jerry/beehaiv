@@ -16,6 +16,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { signupAction } from "@/actions/auth-actions";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import ErrorMessage from "@/components/commons/ErrorMessage";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -23,7 +27,7 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
-  const router = useRouter();
+  const {register, error} = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,8 +37,7 @@ export default function SignUpForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    router.push("/accounts/confirm-code");
+    await register(values);
   };
 
   return (
@@ -43,6 +46,7 @@ export default function SignUpForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 flex flex-col"
       >
+        {error && <ErrorMessage message={error} />}
         <FormField
           control={form.control}
           name="email"

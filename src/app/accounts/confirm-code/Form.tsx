@@ -15,24 +15,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { verificationCodeAction } from "@/actions/auth-actions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  code: z.string().min(6).max(6),
+  code: z.string().min(6).max(255),
 });
 
 export default function ConfirmCodeForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      code: "",
+      code: code!,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    router.push("/accounts/onboarding/basic");
+    const res = await verificationCodeAction(values);
+    if (res!.error) {
+      toast.error("Verification Error", {
+        description: res!.error,
+      });
+    } else if (res!.message) {
+      toast.success("Verification", {
+        description: res!.message,
+      });
+      router.push("/accounts/onboarding");
+    }
   };
 
   return (
@@ -51,7 +64,9 @@ export default function ConfirmCodeForm() {
                 <Input
                   className="w-full"
                   type="tel"
-                  placeholder="123456"
+                  placeholder={
+                    code ? code : "4ebe76e1-a4a6-4866-bdee-97ce650e97a9"
+                  }
                   {...field}
                 />
               </FormControl>

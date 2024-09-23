@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 import Cookies from "@/components/commons/Cookies";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BeeHaiv - A Convenient way to banking with interest",
-  description: "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
+  description:
+    "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
 };
 
 export default function RootLayout({
@@ -17,12 +19,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Toaster />
-        <Cookies />
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          {children}
+          <Toaster />
+          <Cookies />
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

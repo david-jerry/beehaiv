@@ -9,6 +9,7 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa6";
 
 export default function Header() {
+  const { user, logout } = useAuth();
   const setOpened = useGeneralStore((state: any) => state.setOpened);
   const opened = useGeneralStore((state: any) => state.opened);
   const setOpenSubmenu = useGeneralStore((state: any) => state.setOpenSubmenu);
@@ -137,8 +138,11 @@ export default function Header() {
 
 // for sign in and register buttons and link
 const AccountLinks = ({ reset }: { reset: any }) => {
+  const { user, logout } = useAuth();
+
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 lg:gap-6 text-sm">
+      {user === null ? <>
       <FlyoutLink reset={reset} href="/accounts/login">
         Sign In
       </FlyoutLink>
@@ -149,6 +153,17 @@ const AccountLinks = ({ reset }: { reset: any }) => {
       >
         Get Started
       </FlyoutLink>
+      </> :
+      <>
+      <FlyoutLink reset={reset} href="/dashboard">
+        {user!.first_name}
+      </FlyoutLink>
+      <Button
+        onClick={logout}
+        className="hover:scale-95 text-center py-2.5 min-w-[126px] w-full lg:w-fit rounded font-bold bg-red-700 duration-300 ease-in-out transition-all text-background"
+      >
+        Logout
+      </Button></>}
     </div>
   );
 };
@@ -510,6 +525,7 @@ import Image from "next/image";
 import useGeneralStore from "@/hooks/generalStore";
 import { useRouter } from "next/navigation";
 import { useFilteredPosts } from "@/hooks/usePosts";
+import { useAuth } from "@/context/AuthContext";
 
 const MobileSlideInMenu = ({
   opened,

@@ -17,7 +17,7 @@ export default function ConfirmCode() {
       <div className="container flex flex-col h-full items-center justify-center">
         <AccountsForm
           title={"Verify your email address"}
-          description={undefined}
+          description={<Description />}
           form={<ConfirmCodeForm />}
           footer={<Footer />}
         />
@@ -25,7 +25,9 @@ export default function ConfirmCode() {
     </section>
   );
 }
-
+const Description = () => {
+  return <>Please check your email for the verification code</>;
+};
 const Footer = () => {
   return (
     <div className="space-y-4 flex flex-col items-center">

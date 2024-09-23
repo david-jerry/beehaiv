@@ -48,30 +48,21 @@ enum Status {
   PROCESSING = "processing",
 }
 
-interface Transaction {
-  uid: string;
-  date: string;
-  status: Status;
-  amount: number;
-  recipientName: string;
-  recipientBank: string;
-}
-
 interface BasicInfoProps {
-  firstName: string;
-  lastName: string;
-  phone: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
   country?: string;
-  companyAddress?: string;
+  address?: string;
   apartment?: string;
   city?: string;
   state?: string;
   zip?: string;
-  legalName: string;
-  depositSize: string;
-  taxId: string;
-  assetSourceDescription: string;
-  companyIndustry: string;
-  companyWebsite: string;
-  howFoundUs: string;
+  business_name: string;
+  deposit_size: string;
+  tax_id: string;
+  asset_source_description: string;
+  company_industry: string;
+  website: string;
+  description: string;
 }

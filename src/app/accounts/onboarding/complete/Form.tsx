@@ -17,34 +17,46 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import useGeneralStore from "@/hooks/generalStore";
+import { useAuth } from "@/context/AuthContext";
 
 const formSchema = z.object({
-  legalName: z.string().min(2).max(255),
-  depositSize: z.string().min(2).max(255),
-  assetSourceDescription: z.string().min(2).max(14),
-  taxId: z.string().min(6).max(6),
-  companyIndustry: z.string().min(2).max(255),
-  companyWebsite: z.string().min(2).max(255),
-  howFoundUs: z.string().min(5).max(255),
+  business_name: z.string().min(2).max(255),
+  deposit_size: z.string().min(2).max(255),
+  tax_id: z.string().min(2).max(14),
+  asset_source_description: z.string().min(6).max(6),
+  company_industry: z.string().min(2).max(255),
+  website: z.string().min(2).max(255),
+  description: z.string().min(5).max(255),
 });
 
 export default function BusinessForm() {
-  const basicData: BasicInfoProps = useGeneralStore(
-    (state: any) => state.basicData
-  );
-  const setBasicData = useGeneralStore((state: any) => state.setBasicData);
+  const { user } = useAuth();
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      legalName: basicData ? basicData.legalName : "",
-      depositSize: basicData ? basicData.depositSize : "",
-      taxId: basicData ? basicData.taxId : "",
-      assetSourceDescription: basicData ? basicData.assetSourceDescription : "",
-      companyIndustry: basicData ? basicData.companyIndustry : "",
-      companyWebsite: basicData ? basicData.companyWebsite : "",
-      howFoundUs: basicData ? basicData.howFoundUs : "",
+      business_name: user?.business_profiles[0]
+        ? user?.business_profiles[0].business_name
+        : "",
+      deposit_size: user?.business_profiles[0]
+        ? user?.business_profiles[0].deposit_size
+        : "",
+      tax_id: user?.business_profiles[0]
+        ? user?.business_profiles[0].tax_id
+        : "",
+      asset_source_description: user?.business_profiles[0]
+        ? user?.business_profiles[0].asset_source_description
+        : "",
+      company_industry: user?.business_profiles[0]
+        ? user?.business_profiles[0].company_industry
+        : "",
+      website: user?.business_profiles[0]
+        ? user?.business_profiles[0].website
+        : "",
+      description: user?.business_profiles[0]
+        ? user?.business_profiles[0].description
+        : "",
     },
   });
 
@@ -54,8 +66,6 @@ export default function BusinessForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.info(values);
-    setBasicData(values);
-    console.info(basicData)
     router.push("/dashboard");
   };
 
@@ -67,7 +77,7 @@ export default function BusinessForm() {
       >
         <FormField
           control={form.control}
-          name="legalName"
+          name="business_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs">Legal Name *</FormLabel>
@@ -86,7 +96,7 @@ export default function BusinessForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="depositSize"
+            name="deposit_size"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs">
@@ -106,7 +116,7 @@ export default function BusinessForm() {
           />
           <FormField
             control={form.control}
-            name="taxId"
+            name="tax_id"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs">Tax ID / EIN *</FormLabel>
@@ -126,7 +136,7 @@ export default function BusinessForm() {
 
         <FormField
           control={form.control}
-          name="assetSourceDescription"
+          name="asset_source_description"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs">
@@ -148,7 +158,7 @@ export default function BusinessForm() {
         <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
           <FormField
             control={form.control}
-            name="companyIndustry"
+            name="company_industry"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs">Company Industry</FormLabel>
@@ -166,7 +176,7 @@ export default function BusinessForm() {
           />
           <FormField
             control={form.control}
-            name="companyWebsite"
+            name="website"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs">Company Website</FormLabel>
@@ -184,7 +194,7 @@ export default function BusinessForm() {
           />
           <FormField
             control={form.control}
-            name="howFoundUs"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs">

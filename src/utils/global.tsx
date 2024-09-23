@@ -5,3 +5,6 @@ export const getCurrentDate = () => {
 };
 
 export const oneDay = 24 * 60 * 60 * 1000;
+
+export const baseUrl = "https://beehaiv-api.jeremiahedavid.online/api/v1"
+export const domain = "https://beehaiv.jeremiahedavid.online"

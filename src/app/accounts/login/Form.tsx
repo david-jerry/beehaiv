@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import ErrorMessage from "@/components/commons/ErrorMessage";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -23,7 +23,8 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
-  const router = useRouter();
+  const { login, error } = useAuth();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +34,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    router.push("/dashboard");
+    await login(values);
   };
 
   return (
@@ -42,6 +43,7 @@ export default function LoginForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 flex flex-col"
       >
+        {error && <ErrorMessage message={error} />}
         <FormField
           control={form.control}
           name="email"
@@ -65,7 +67,7 @@ export default function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs">Username</FormLabel>
+              <FormLabel className="text-xs">Password</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"
