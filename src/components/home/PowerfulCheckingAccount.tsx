@@ -15,7 +15,7 @@ export default function PowerfulCheckingAccount() {
             BeeHaiv Technologies is a financial technology company, not a bank
             or FDIC-insured depository institution. Banking services are
             provided by FirstBank, a Tennessee corporation, and by Grasshopper
-            Bank, N.A. and Third Coast Bank SSB; Members FDIC. The FDIC's
+            Bank, N.A. and Third Coast Bank SSB; Members FDIC. The FDIC&apos;s
             deposit insurance coverage only protects against the failure of an
             FDIC-insured bank.
           </p>
@@ -27,7 +27,7 @@ export default function PowerfulCheckingAccount() {
             Say goodbye to wire fees
           </strong>
           <p>
-            There's no such thing as a wire or ACH fee on BeeHaiv. Enjoy zero
+            There&apos;s no such thing as a wire or ACH fee on BeeHaiv. Enjoy zero
             fee banking from our bank partners.
           </p>
           <ul>

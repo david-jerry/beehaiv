@@ -177,7 +177,7 @@ export default function Footer() {
             invest. Advisory services through Atomic Invest are designed to
             assist clients in achieving a favorable outcome in their investment
             portfolio. They are not intended to provide tax advice or financial
-            planning with respect to every aspect of a client's financial
+            planning with respect to every aspect of a client&apos;s financial
             situation and do not include investments that clients may hold
             outside of Atomic Invest. For more details about Atomic Invest,
             please see the Form CRS, Form ADV Part 2A, the Privacy Policy, and
@@ -201,7 +201,7 @@ export default function Footer() {
             rate when held to maturity. T-Bills are purchased at a discount to
             par, $1,000, with the price being subject to market fluctuation. The
             amount of T-Bills available at a particular yield will depend upon
-            the sellers' offer size
+            the sellers offer size
           </p>
 
           <p>
@@ -247,16 +247,16 @@ export default function Footer() {
             Deposit placement through an IntraFi service is subject to the
             terms, conditions, and disclosures in applicable agreements.
             Deposits that are placed through an IntraFi service at FDIC-insured
-            banks in IntraFi's network are eligible for FDIC deposit insurance
+            banks in IntraFi&apos;s network are eligible for FDIC deposit insurance
             coverage at the network banks. The depositor may exclude banks from
             eligibility to receive its funds. To meet the conditions for
             pass-through FDIC deposit insurance, deposit accounts at
-            FDIC-insured banks in IntraFi's network that hold deposits placed
+            FDIC-insured banks in IntraFi&apos;s network that hold deposits placed
             using an IntraFi service are titled, and deposit account records are
             maintained, in accordance with FDIC regulations for pass-through
             coverage. Although deposits are placed in increments that do not
             exceed the FDIC standard maximum deposit insurance amount ("SMDIA")
-            at any one bank, a depositor's balances at the institution that
+            at any one bank, a depositor&apos;s balances at the institution that
             places deposits may be uninsured. The depositor must make any
             necessary arrangements to protect such balances consistent with
             applicable law and must determine whether placement through an

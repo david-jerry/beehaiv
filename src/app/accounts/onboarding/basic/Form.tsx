@@ -212,7 +212,7 @@ export default function BasicForm() {
                   </SelectItem>
                   <SelectItem value="Cook Islands">Cook Islands</SelectItem>
                   <SelectItem value="Costa Rica">Costa Rica</SelectItem>
-                  <SelectItem value="Cote D'ivoire">Cote D'ivoire</SelectItem>
+                  <SelectItem value="Cote D'ivoire">Cote D&apos;ivoire</SelectItem>
                   <SelectItem value="Croatia">Croatia</SelectItem>
                   <SelectItem value="Cuba">Cuba</SelectItem>
                   <SelectItem value="Cyprus">Cyprus</SelectItem>
@@ -291,7 +291,7 @@ export default function BasicForm() {
                   <SelectItem value="Kenya">Kenya</SelectItem>
                   <SelectItem value="Kiribati">Kiribati</SelectItem>
                   <SelectItem value="Korea, Democratic People's Republic of">
-                    Korea, Democratic People's Republic of
+                    Korea, Democratic People&apos;s Republic of
                   </SelectItem>
                   <SelectItem value="Korea, Republic of">
                     Korea, Republic of
@@ -299,7 +299,7 @@ export default function BasicForm() {
                   <SelectItem value="Kuwait">Kuwait</SelectItem>
                   <SelectItem value="Kyrgyzstan">Kyrgyzstan</SelectItem>
                   <SelectItem value="Lao People's Democratic Republic">
-                    Lao People's Democratic Republic
+                    Lao People&apos;s Democratic Republic
                   </SelectItem>
                   <SelectItem value="Latvia">Latvia</SelectItem>
                   <SelectItem value="Lebanon">Lebanon</SelectItem>

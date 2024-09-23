@@ -79,7 +79,7 @@ export default function Tools() {
               BeeHaiv Technologies is a financial technology company, not a bank
               or FDIC-insured depository institution. Banking services are
               provided by FirstBank, a Tennessee corporation, and by Grasshopper
-              Bank, N.A. and Third Coast Bank SSB; Members FDIC. The FDIC's
+              Bank, N.A. and Third Coast Bank SSB; Members FDIC. The FDIC&apos;s
               deposit insurance coverage only protects against the failure of an
               FDIC-insured bank.*** All screenshots provided are for
               illustrative purposes only and any performance figures displayed

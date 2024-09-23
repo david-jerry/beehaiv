@@ -102,7 +102,7 @@ export default function VerifyEmail({ verificationCode }: AWSVerifyEmailProps) {
               </Heading>
               <Text className={"text-sm font-normal"}>
                 Thanks for starting the new Beehaiv account creation process. We
-                want to make sure it's really you. Please enter the following
+                want to make sure it&apos;s really you. Please enter the following
                 verification code when prompted. If you don&apos;t want to
                 complete your account creation, you can ignore this message.
               </Text>

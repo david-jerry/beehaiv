@@ -40,7 +40,8 @@ export default function Services() {
       <div className="flex flex-col space-y-3 w-full">
         <strong className="font-bold block">Invoicing</strong>
         <p className="font-normal">
-          Create custom-branded invoices with your company's logo and colors.
+          Create custom-branded invoices with your company&apos;s logo and
+          colors.
         </p>
         <div className="w-full aspect-square">
           <Image
@@ -103,7 +104,7 @@ export default function Services() {
       <div className="flex flex-col space-y-3 w-full">
         <strong className="font-bold block">Spend Controls</strong>
         <p className="font-normal">
-          Create custom-branded invoices with your company's logo and colors.
+          Create custom-branded invoices with your company&apos;s logo and colors.
         </p>
         <div className="w-full aspect-square">
           <Image
@@ -116,11 +117,11 @@ export default function Services() {
         </div>
       </div>
       <div className="md:col-span-2 lg:col-span-3">
-        BeeHaiv is a financial technology company, not a lender. BeeHaiv does not
-        issue loans or make credit decisions in connection with loans. All loans
-        are subject to credit approval from BeeHaiv's bank or credit partners. SBA
-        loans are provided by a network of vendors and subject to their
-        approval. Your terms may vary.
+        BeeHaiv is a financial technology company, not a lender. BeeHaiv does
+        not issue loans or make credit decisions in connection with loans. All
+        loans are subject to credit approval from BeeHaiv&apos;s bank or credit
+        partners. SBA loans are provided by a network of vendors and subject to
+        their approval. Your terms may vary.
       </div>
     </div>
   );
