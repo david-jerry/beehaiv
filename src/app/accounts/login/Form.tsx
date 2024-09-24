@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const { login, error } = useAuth();
-  const { pending } = useFormStatus();
+  const [pending, startTransition] = React.useTransition();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,7 +36,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await login(values);
+    startTransition(async() => await login(values))
   };
 
   return (

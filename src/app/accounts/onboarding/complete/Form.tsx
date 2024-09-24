@@ -42,7 +42,7 @@ const formSchema = z.object({
 });
 
 export default function BusinessForm() {
-  const { pending } = useFormStatus();
+  const [pending, startTransition] = React.useTransition();
   const { user } = useAuth();
 
   const router = useRouter();
@@ -78,13 +78,15 @@ export default function BusinessForm() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const res = await createBusinessAction(values);
-    if (res.data) {
-      toast.success("Complete", {
-        description: "You have completed your onboarding process",
-      });
-      router.push("/dashboard");
-    }
+    startTransition(async () => {
+      const res = await createBusinessAction(values);
+      if (res.data) {
+        toast.success("Complete", {
+          description: "You have completed your onboarding process",
+        });
+        router.push("/dashboard");
+      }
+    });
   };
 
   return (

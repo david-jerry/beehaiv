@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import React, { Suspense } from "react";
+import React, { useTransition, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { verificationCodeAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
-import { useFormStatus } from "react-dom";
 
 // Define the form schema
 const formSchema = z.object({
@@ -34,7 +33,7 @@ function SearchParamsFormWrapper() {
 
 // The actual form component receives the code from the wrapper
 function ConfirmCodeForm({ code }: { code: string }) {
-  const { pending } = useFormStatus();
+  const [ pending, startTransition ] = useTransition();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -45,17 +44,19 @@ function ConfirmCodeForm({ code }: { code: string }) {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const res = await verificationCodeAction(values);
-    if (res!.error) {
-      toast.error("Verification Error", {
-        description: res!.error,
-      });
-    } else if (res!.data) {
-      toast.success("Verification Successful", {
-        description: res.verified_already ? res!.data : "Already verified.",
-      });
-      router.push("/accounts/onboarding");
-    }
+    startTransition(async () => {
+      const res = await verificationCodeAction(values);
+      if (res!.error) {
+        toast.error("Verification Error", {
+          description: res!.error,
+        });
+      } else if (res!.data) {
+        toast.success("Verification Successful", {
+          description: res.verified_already ? res!.data : "Already verified.",
+        });
+        router.push("/accounts/onboarding");
+      }
+    })
   };
 
   return (

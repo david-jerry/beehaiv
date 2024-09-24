@@ -43,7 +43,7 @@ const formSchema = z.object({
 });
 
 export default function BasicForm() {
-  const { pending } = useFormStatus();
+  const [pending, startTransition] = React.useTransition();
   const router = useRouter();
   const { user, updateUserBio } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,7 +57,7 @@ export default function BasicForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await updateUserBio(values);
+    startTransition(async () => await updateUserBio(values));
   };
 
   return (

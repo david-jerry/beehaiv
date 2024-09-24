@@ -21,6 +21,7 @@ const formSchema = z.object({
 });
 
 export default function ForgotPasswordForm() {
+  const [pending, startTransition] = React.useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,7 +29,9 @@ export default function ForgotPasswordForm() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    startTransition(async() => {})
+  };
 
   return (
     <Form {...form}>
@@ -54,7 +57,7 @@ export default function ForgotPasswordForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Reset password</Button>
+        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Reset password"}</Button>
       </form>
     </Form>
   );

@@ -28,7 +28,7 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
-  const { pending } = useFormStatus();
+  const [pending, startTransition] = React.useTransition();
 
   const { register, error } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,7 +40,7 @@ export default function SignUpForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await register(values);
+    startTransition(async () => await register(values));
   };
 
   return (
