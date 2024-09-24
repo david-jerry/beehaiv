@@ -42,44 +42,38 @@ const pinFormSchema = z.object({
 
 export const loginAction = async (data: z.infer<typeof loginFormSchema>) => {
   try {
+    // Validate input data against schema
     const validatedData = loginFormSchema.parse(data);
 
-    const res = await axios
-      .post(`${baseUrl}/auth/login`, validatedData)
-      .then(async (res) => {
-        console.log("Axios Response", res.data);
-        if (res.data.code) {
-          await resend.emails.send({
-            from: "[Beehaiv Technologies] - Email Verification <authority@beehaiv.jeremiahedavid.online>",
-            to: validatedData.email,
-            subject: "Re:Email Verification",
-            text: `Copy this code: ${res.data.code} to verify your email address or click this link <a href="https://${res.data.user.domain}/${res.data.code}">Complete Verification</a>`,
-            react: VerifyEmail({ verificationCode: res.data.code }),
-          });
-          return {
-            error: res.data,
-          };
-        }
-        return {
-          data: res.data,
-        };
-      })
-      .catch((err) => {
-        console.log("Axios Error", err.response.data);
-        return {
-          error: err.response.data,
-        };
+    // Perform login request
+    const res = await axios.post(`${baseUrl}/auth/login`, validatedData);
+    console.log("Axios Response", res.data);
+
+    // If a verification code is returned, send an email with the code
+    if (res.data.code) {
+      await resend.emails.send({
+        from: "[Beehaiv Technologies] - Email Verification <authority@beehaiv.jeremiahedavid.online>",
+        to: validatedData.email,
+        subject: "Re:Email Verification",
+        text: `Copy this code: ${res.data.code} to verify your email address or click this link <a href="https://${res.data.user.domain}/${res.data.code}">Complete Verification</a>`,
+        react: VerifyEmail({ verificationCode: res.data.code }),
       });
 
-    console.log("Axios Returned Data: ", res);
+      return {
+        error: res.data,
+      };
+    }
 
-    //
+    // Return successful login data
     return {
-      data: res,
+      data: res.data,
     };
-  } catch (error: any) {
+  } catch (err: any) {
+    // Handle error and log response
+    console.log("Axios Error", err.response?.data || err.message);
+
     return {
-      error: error.message,
+      error: err.response?.data || err.message,
     };
   }
 };
