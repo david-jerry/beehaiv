@@ -70,28 +70,28 @@ export const AuthProvider = ({
   const login = async (data: z.infer<typeof loginFormSchema>) => {
     try {
       const validatedData = loginFormSchema.parse(data);
-      const resData: any = await loginAction(validatedData);
+      const resData = await loginAction(validatedData);
 
-      if (!resData.data.error) {
+      if (!resData.error) {
         axios.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${resData.access_token}`;
-        localStorage.setItem("token", resData.access_token);
-        setUser(resData.user);
+        ] = `Bearer ${resData.data.access_token}`;
+        localStorage.setItem("token", resData.data.access_token);
+        setUser(resData.data.user);
         toast("Authorization", {
-          description: resData.message,
+          description: resData.data.message,
         });
         if (
-          resData.user.first_name.length > 0 &&
-          resData.user.last_name.length > 0
+          resData.data.user.first_name.length > 0 &&
+          resData.data.user.last_name.length > 0
         ) {
           router.push("/dashboard");
         } else {
           router.push("/accounts/onboarding");
         }
       } else {
-        setError(resData.data.error.message);
-        if (resData.data.error.code) {
+        setError(resData.error.message);
+        if (resData.error.code) {
           router.push("/accounts/confirm-code");
         }
       }
