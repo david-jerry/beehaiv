@@ -79,7 +79,7 @@ export const AuthProvider = ({
         localStorage.setItem("token", resData.access_token);
         setUser(resData.user);
         toast("Authorization", {
-          description: "You have successfully ben authorized into your account",
+          description: resData.message,
         });
         if (
           resData.user.first_name.length > 0 &&
