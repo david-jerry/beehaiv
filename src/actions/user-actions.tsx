@@ -19,7 +19,6 @@ const userFormSchema = z.object({
 });
 
 const userAddressSchema = z.object({
-  country: z.string().min(2).max(255),
   address: z.string().min(2).max(255),
   apartment: z.string().min(2).max(14),
   city: z.string().min(2).max(255),
@@ -30,22 +29,50 @@ const userAddressSchema = z.object({
 const businessFormSchema = z.object({
   business_name: z.string().min(2).max(255),
   deposit_size: z.string().min(2).max(255),
-  tax_id: z.string().min(2).max(14),
-  asset_source_description: z.string().min(6).max(6),
+  tax_id: z.string().min(2).max(50),
+  asset_source_description: z.string().min(6).max(255),
   company_industry: z.string().min(2).max(255),
   website: z.string().min(2).max(255),
   description: z.string().min(5).max(255),
+  annual_revenue: z.string().min(0),
+  number_of_employees: z.string().min(0),
+  founding_date: z.string().min(0),
 });
 
-export const updateUserAction = async (data: z.infer<typeof userFormSchema>, user_uid: string) => {
+export const getUserAction = async (token: string) => {
+  try {
+    const res = await axios.get(`${baseUrl}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { status: res.status, data: res.data };
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+// Helper function to get the token, with client-side check
+export const updateUserAction = async (
+  data: z.infer<typeof userFormSchema>,
+  user_uid: string,
+  token: string
+) => {
   try {
     // Validate the data using the schema
     const validatedData = userFormSchema.parse(data);
-
+    console.log(token);
     // Perform the request to signup a new user
     const response = await axios.patch(
       `${baseUrl}/users/${user_uid}`,
-      validatedData
+      validatedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     // Check if the response is successful
@@ -68,7 +95,8 @@ export const updateUserAction = async (data: z.infer<typeof userFormSchema>, use
 
 export const updateUserAddressAction = async (
   data: z.infer<typeof userAddressSchema>,
-  user_uid: string
+  user_uid: string,
+  token: string
 ) => {
   try {
     // Validate the data using the schema
@@ -77,7 +105,12 @@ export const updateUserAddressAction = async (
     // Perform the request to signup a new user
     const response = await axios.patch(
       `${baseUrl}/users/${user_uid}`,
-      validatedData
+      validatedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     // Check if the response is successful
@@ -98,19 +131,20 @@ export const updateUserAddressAction = async (
   }
 };
 
-
 export const createBusinessAction = async (
   data: z.infer<typeof businessFormSchema>,
+  token: string
 ) => {
   try {
     // Validate the data using the schema
     const validatedData = businessFormSchema.parse(data);
 
     // Perform the request to signup a new user
-    const response = await axios.post(
-      `${baseUrl}/businesses`,
-      validatedData
-    );
+    const response = await axios.post(`${baseUrl}/businesses`, validatedData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     // Check if the response is successful
     if (response.status === 201) {

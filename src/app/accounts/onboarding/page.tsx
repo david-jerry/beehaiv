@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import GetStarted from "./GetStarted";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata: Metadata = {
   title: "Welcome to BeeHaiv - BeeHaiv Finance Tech",
@@ -15,20 +16,20 @@ export const metadata: Metadata = {
 
 export default function Welcome() {
   return (
-    <section className="w-screen h-screen flex flex-col items-center justify-center">
-      <div className="container flex flex-col h-full items-center justify-center">
-        <AccountsForm
-          title={"Welcome to BeeHaiv"}
-          description={<Description />}
-          form={<GetStarted />}
-          footer={<Footer />}
-        />
-      </div>
-    </section>
+    <ProtectedRoute>
+      <section className="w-screen h-screen flex flex-col items-center justify-center">
+        <div className="container flex flex-col h-full items-center justify-center">
+          <AccountsForm
+            title={"Welcome to BeeHaiv"}
+            description={<Description />}
+            form={<GetStarted />}
+            footer={<Footer />}
+          />
+        </div>
+      </section>
+    </ProtectedRoute>
   );
 }
-
-
 
 const Description = () => {
   return (

@@ -1,26 +1,42 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const ProtectedRoute = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { user } = useAuth();
+  const { user, getUser } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      router.push("/accounts/login");
-    }
+    const checkAuth = async () => {
+      // Check if the token is in localStorage (or cookies, if preferred)
+      const token = localStorage.getItem("token");
 
-    if(user && !user.first_name) {
-      router.push("/accounts/onboarding")
-    }
-  }, [user, router]);
+      if (!token) {
+        router.push("/accounts/login"); // Redirect if no token
+      } else {
+        // Set the Authorization header with the token for axios
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+        // Try to fetch the user data if it's not already loaded
+        if (!user) {
+          await getUser(); // Fetch the user from API
+        }
+
+        if (user && user.is_blocked) {
+          router.push("/accounts/blocked")
+        }
+      }
+    };
+
+    checkAuth();
+  }, [user, getUser, router]);
 
   return user ? children : null;
 };

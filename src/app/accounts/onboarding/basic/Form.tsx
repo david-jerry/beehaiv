@@ -480,7 +480,7 @@ export default function BasicForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">{pending ? "Submitting..." : "Continue"}</Button>
+        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Continue"}</Button>
       </form>
     </Form>
   );

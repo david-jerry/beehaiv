@@ -176,11 +176,20 @@ export const transferPinAction = async (
   try {
     // Validate the data using the schema
     const validatedData = pinFormSchema.parse(data);
+    const token = localStorage.get("token");
 
     // Perform the request to signup a new user
     const response = await axios.post(
-      `${baseUrl}/auth/transfer-pin?ip_address=${IP}`,
-      { transfer_pin: validatedData.pin }
+      `${baseUrl}/auth/transfer-pin`,
+      { transfer_pin: validatedData.pin },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          ip_address: IP,
+        },
+      }
     );
 
     // Check if the response is successful

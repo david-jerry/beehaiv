@@ -31,8 +31,8 @@ import {
 const formSchema = z.object({
   business_name: z.string().min(2).max(255),
   deposit_size: z.string().min(2).max(255),
-  tax_id: z.string().min(2).max(14),
-  asset_source_description: z.string().min(6).max(6),
+  tax_id: z.string().min(2).max(50),
+  asset_source_description: z.string().min(6).max(255),
   company_industry: z.string().min(2).max(255),
   website: z.string().min(2).max(255),
   description: z.string().min(5).max(255),
@@ -41,9 +41,18 @@ const formSchema = z.object({
   founding_date: z.string().min(0),
 });
 
+const getToken = () => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    return token ? `Bearer ${token}` : null;
+  }
+  return null; // Return null or handle case for server-side
+};
+
 export default function BusinessForm() {
   const [pending, startTransition] = React.useTransition();
   const { user } = useAuth();
+  const token = getToken();
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,13 +87,27 @@ export default function BusinessForm() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(token);
+
+    if (!token) {
+      router.push("/accounts/login");
+    }
     startTransition(async () => {
-      const res = await createBusinessAction(values);
+      const res = await createBusinessAction(values, token!);
       if (res.data) {
         toast.success("Complete", {
           description: "You have completed your onboarding process",
         });
         router.push("/dashboard");
+      } else if (res.error === "Token is invalid or expired") {
+        toast.error("Error", {
+          description: res.error,
+        });
+        router.push("/accounts/login");
+      } else {
+        toast.error("Error", {
+          description: res.error,
+        });
       }
     });
   };
@@ -219,7 +242,7 @@ export default function BusinessForm() {
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Company Revenue" />
+                      <SelectValue placeholder="Industry" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -600,44 +623,44 @@ export default function BusinessForm() {
             )}
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="annual_revenue"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">Annual Revenue</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full"
-                      type="tel"
-                      placeholder="2,000,000"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="number_of_employees"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">Number of Employees</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full"
-                      type="tel"
-                      placeholder="4"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="annual_revenue"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Annual Revenue</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full"
+                    type="tel"
+                    placeholder="2,000,000"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="number_of_employees"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Number of Employees</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full"
+                    type="tel"
+                    placeholder="4"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="founding_date"
@@ -647,7 +670,7 @@ export default function BusinessForm() {
                 <FormControl>
                   <Input
                     className="w-full"
-                    type="datetime-local"
+                    type="date"
                     placeholder=""
                     {...field}
                   />
