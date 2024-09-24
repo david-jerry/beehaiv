@@ -16,6 +16,10 @@ const ProtectedRoute = ({
     if (!user) {
       router.push("/accounts/login");
     }
+
+    if(user && !user.first_name) {
+      router.push("/accounts/onboarding")
+    }
   }, [user, router]);
 
   return user ? children : null;
