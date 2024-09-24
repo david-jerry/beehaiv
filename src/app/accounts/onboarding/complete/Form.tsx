@@ -36,6 +36,9 @@ const formSchema = z.object({
   company_industry: z.string().min(2).max(255),
   website: z.string().min(2).max(255),
   description: z.string().min(5).max(255),
+  annual_revenue: z.string().min(0),
+  number_of_employees: z.string().min(0),
+  founding_date: z.string().min(0),
 });
 
 export default function BusinessForm() {
@@ -219,7 +222,9 @@ export default function BusinessForm() {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="Accounting">Accounting</SelectItem>
-                    <SelectItem value="Airlines/Aviation">Airlines/Aviation</SelectItem>
+                    <SelectItem value="Airlines/Aviation">
+                      Airlines/Aviation
+                    </SelectItem>
                     <SelectItem value="Alternative Dispute Resolution">
                       Alternative Dispute Resolution
                     </SelectItem>
@@ -227,7 +232,9 @@ export default function BusinessForm() {
                       Alternative Medicine
                     </SelectItem>
                     <SelectItem value="Animation">Animation</SelectItem>
-                    <SelectItem value="Apparel/Fashion">Apparel/Fashion</SelectItem>
+                    <SelectItem value="Apparel/Fashion">
+                      Apparel/Fashion
+                    </SelectItem>
                     <SelectItem value="Architecture/Planning">
                       Architecture/Planning
                     </SelectItem>
@@ -236,11 +243,15 @@ export default function BusinessForm() {
                     <SelectItem value="Aviation/Aerospace">
                       Aviation/Aerospace
                     </SelectItem>
-                    <SelectItem value="Banking/Mortgage">Banking/Mortgage</SelectItem>
+                    <SelectItem value="Banking/Mortgage">
+                      Banking/Mortgage
+                    </SelectItem>
                     <SelectItem value="Biotechnology/Greentech">
                       Biotechnology/Greentech
                     </SelectItem>
-                    <SelectItem value="Broadcast Media">Broadcast Media</SelectItem>
+                    <SelectItem value="Broadcast Media">
+                      Broadcast Media
+                    </SelectItem>
                     <SelectItem value="Building Materials">
                       Building Materials
                     </SelectItem>
@@ -254,12 +265,18 @@ export default function BusinessForm() {
                     <SelectItem value="Civic/Social Organization">
                       Civic/Social Organization
                     </SelectItem>
-                    <SelectItem value="Civil Engineering">Civil Engineering</SelectItem>
+                    <SelectItem value="Civil Engineering">
+                      Civil Engineering
+                    </SelectItem>
                     <SelectItem value="Commercial Real Estate">
                       Commercial Real Estate
                     </SelectItem>
-                    <SelectItem value="Computer Games">Computer Games</SelectItem>
-                    <SelectItem value="Computer Hardware">Computer Hardware</SelectItem>
+                    <SelectItem value="Computer Games">
+                      Computer Games
+                    </SelectItem>
+                    <SelectItem value="Computer Hardware">
+                      Computer Hardware
+                    </SelectItem>
                     <SelectItem value="Computer Networking">
                       Computer Networking
                     </SelectItem>
@@ -273,8 +290,12 @@ export default function BusinessForm() {
                     <SelectItem value="Consumer Electronics">
                       Consumer Electronics
                     </SelectItem>
-                    <SelectItem value="Consumer Goods">Consumer Goods</SelectItem>
-                    <SelectItem value="Consumer Services">Consumer Services</SelectItem>
+                    <SelectItem value="Consumer Goods">
+                      Consumer Goods
+                    </SelectItem>
+                    <SelectItem value="Consumer Services">
+                      Consumer Services
+                    </SelectItem>
                     <SelectItem value="Cosmetics">Cosmetics</SelectItem>
                     <SelectItem value="Dairy">Dairy</SelectItem>
                     <SelectItem value="Defense/Space">Defense/Space</SelectItem>
@@ -292,8 +313,12 @@ export default function BusinessForm() {
                     <SelectItem value="Environmental Services">
                       Environmental Services
                     </SelectItem>
-                    <SelectItem value="Events Services">Events Services</SelectItem>
-                    <SelectItem value="Executive Office">Executive Office</SelectItem>
+                    <SelectItem value="Events Services">
+                      Events Services
+                    </SelectItem>
+                    <SelectItem value="Executive Office">
+                      Executive Office
+                    </SelectItem>
                     <SelectItem value="Facilities Services">
                       Facilities Services
                     </SelectItem>
@@ -303,11 +328,17 @@ export default function BusinessForm() {
                     </SelectItem>
                     <SelectItem value="Fine Art">Fine Art</SelectItem>
                     <SelectItem value="Fishery">Fishery</SelectItem>
-                    <SelectItem value="Food Production">Food Production</SelectItem>
-                    <SelectItem value="Food/Beverages">Food/Beverages</SelectItem>
+                    <SelectItem value="Food Production">
+                      Food Production
+                    </SelectItem>
+                    <SelectItem value="Food/Beverages">
+                      Food/Beverages
+                    </SelectItem>
                     <SelectItem value="Fundraising">Fundraising</SelectItem>
                     <SelectItem value="Furniture">Furniture</SelectItem>
-                    <SelectItem value="Gambling/Casinos">Gambling/Casinos</SelectItem>
+                    <SelectItem value="Gambling/Casinos">
+                      Gambling/Casinos
+                    </SelectItem>
                     <SelectItem value="Glass/Ceramics/Concrete">
                       Glass/Ceramics/Concrete
                     </SelectItem>
@@ -320,7 +351,9 @@ export default function BusinessForm() {
                     <SelectItem value="Graphic Design/Web Design">
                       Graphic Design/Web Design
                     </SelectItem>
-                    <SelectItem value="Health/Fitness">Health/Fitness</SelectItem>
+                    <SelectItem value="Health/Fitness">
+                      Health/Fitness
+                    </SelectItem>
                     <SelectItem value="Higher Education/Acadamia">
                       Higher Education/Acadamia
                     </SelectItem>
@@ -359,15 +392,21 @@ export default function BusinessForm() {
                       Investment Management/Hedge Fund/Private Equity
                     </SelectItem>
                     <SelectItem value="Judiciary">Judiciary</SelectItem>
-                    <SelectItem value="Law Enforcement">Law Enforcement</SelectItem>
+                    <SelectItem value="Law Enforcement">
+                      Law Enforcement
+                    </SelectItem>
                     <SelectItem value="Law Practice/Law Firms">
                       Law Practice/Law Firms
                     </SelectItem>
-                    <SelectItem value="Legal Services">Legal Services</SelectItem>
+                    <SelectItem value="Legal Services">
+                      Legal Services
+                    </SelectItem>
                     <SelectItem value="Legislative Office">
                       Legislative Office
                     </SelectItem>
-                    <SelectItem value="Leisure/Travel">Leisure/Travel</SelectItem>
+                    <SelectItem value="Leisure/Travel">
+                      Leisure/Travel
+                    </SelectItem>
                     <SelectItem value="Library">Library</SelectItem>
                     <SelectItem value="Logistics/Procurement">
                       Logistics/Procurement
@@ -380,20 +419,30 @@ export default function BusinessForm() {
                       Management Consulting
                     </SelectItem>
                     <SelectItem value="Maritime">Maritime</SelectItem>
-                    <SelectItem value="Market Research">Market Research</SelectItem>
+                    <SelectItem value="Market Research">
+                      Market Research
+                    </SelectItem>
                     <SelectItem value="Marketing/Advertising/Sales">
                       Marketing/Advertising/Sales
                     </SelectItem>
                     <SelectItem value="Mechanical or Industrial Engineering">
                       Mechanical or Industrial Engineering
                     </SelectItem>
-                    <SelectItem value="Media Production">Media Production</SelectItem>
-                    <SelectItem value="Medical Equipment">Medical Equipment</SelectItem>
-                    <SelectItem value="Medical Practice">Medical Practice</SelectItem>
+                    <SelectItem value="Media Production">
+                      Media Production
+                    </SelectItem>
+                    <SelectItem value="Medical Equipment">
+                      Medical Equipment
+                    </SelectItem>
+                    <SelectItem value="Medical Practice">
+                      Medical Practice
+                    </SelectItem>
                     <SelectItem value="Mental Health Care">
                       Mental Health Care
                     </SelectItem>
-                    <SelectItem value="Military Industry">Military Industry</SelectItem>
+                    <SelectItem value="Military Industry">
+                      Military Industry
+                    </SelectItem>
                     <SelectItem value="Mining/Metals">Mining/Metals</SelectItem>
                     <SelectItem value="Motion Pictures/Film">
                       Motion Pictures/Film
@@ -402,7 +451,9 @@ export default function BusinessForm() {
                       Museums/Institutions
                     </SelectItem>
                     <SelectItem value="Music">Music</SelectItem>
-                    <SelectItem value="Nanotechnology">Nanotechnology</SelectItem>
+                    <SelectItem value="Nanotechnology">
+                      Nanotechnology
+                    </SelectItem>
                     <SelectItem value="Newspapers/Journalism">
                       Newspapers/Journalism
                     </SelectItem>
@@ -412,8 +463,12 @@ export default function BusinessForm() {
                     <SelectItem value="Oil/Energy/Solar/Greentech">
                       Oil/Energy/Solar/Greentech
                     </SelectItem>
-                    <SelectItem value="Online Publishing">Online Publishing</SelectItem>
-                    <SelectItem value="Other Industry">Other Industry</SelectItem>
+                    <SelectItem value="Online Publishing">
+                      Online Publishing
+                    </SelectItem>
+                    <SelectItem value="Other Industry">
+                      Other Industry
+                    </SelectItem>
                     <SelectItem value="Outsourcing/Offshoring">
                       Outsourcing/Offshoring
                     </SelectItem>
@@ -426,8 +481,12 @@ export default function BusinessForm() {
                     <SelectItem value="Paper/Forest Products">
                       Paper/Forest Products
                     </SelectItem>
-                    <SelectItem value="Performing Arts">Performing Arts</SelectItem>
-                    <SelectItem value="Pharmaceuticals">Pharmaceuticals</SelectItem>
+                    <SelectItem value="Performing Arts">
+                      Performing Arts
+                    </SelectItem>
+                    <SelectItem value="Pharmaceuticals">
+                      Pharmaceuticals
+                    </SelectItem>
                     <SelectItem value="Philanthropy">Philanthropy</SelectItem>
                     <SelectItem value="Photography">Photography</SelectItem>
                     <SelectItem value="Plastics">Plastics</SelectItem>
@@ -467,15 +526,23 @@ export default function BusinessForm() {
                     <SelectItem value="Renewables/Environment">
                       Renewables/Environment
                     </SelectItem>
-                    <SelectItem value="Research Industry">Research Industry</SelectItem>
+                    <SelectItem value="Research Industry">
+                      Research Industry
+                    </SelectItem>
                     <SelectItem value="Restaurants">Restaurants</SelectItem>
-                    <SelectItem value="Retail Industry">Retail Industry</SelectItem>
+                    <SelectItem value="Retail Industry">
+                      Retail Industry
+                    </SelectItem>
                     <SelectItem value="Security/Investigations">
                       Security/Investigations
                     </SelectItem>
-                    <SelectItem value="Semiconductors">Semiconductors</SelectItem>
+                    <SelectItem value="Semiconductors">
+                      Semiconductors
+                    </SelectItem>
                     <SelectItem value="Shipbuilding">Shipbuilding</SelectItem>
-                    <SelectItem value="Sporting Goods">Sporting Goods</SelectItem>
+                    <SelectItem value="Sporting Goods">
+                      Sporting Goods
+                    </SelectItem>
                     <SelectItem value="Sports">Sports</SelectItem>
                     <SelectItem value="Staffing/Recruiting">
                       Staffing/Recruiting
@@ -490,7 +557,9 @@ export default function BusinessForm() {
                     <SelectItem value="Translation/Localization">
                       Translation/Localization
                     </SelectItem>
-                    <SelectItem value="Transportation">Transportation</SelectItem>
+                    <SelectItem value="Transportation">
+                      Transportation
+                    </SelectItem>
                     <SelectItem value="Utilities">Utilities</SelectItem>
                     <SelectItem value="Venture Capital/VC">
                       Venture Capital/VC
@@ -500,7 +569,9 @@ export default function BusinessForm() {
                     <SelectItem value="Wholesale">Wholesale</SelectItem>
                     <SelectItem value="Wine/Spirits">Wine/Spirits</SelectItem>
                     <SelectItem value="Wireless">Wireless</SelectItem>
-                    <SelectItem value="Writing/Editing">Writing/Editing</SelectItem>
+                    <SelectItem value="Writing/Editing">
+                      Writing/Editing
+                    </SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -526,6 +597,64 @@ export default function BusinessForm() {
               </FormItem>
             )}
           />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="annual_revenue"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Annual Revenue</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="w-full"
+                      type="tel"
+                      placeholder="2,000,000"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="number_of_employees"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Number of Employees</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="w-full"
+                      type="tel"
+                      placeholder="4"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="founding_date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs">Date Founded</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full"
+                    type="datetime-local"
+                    placeholder=""
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="description"
