@@ -82,8 +82,8 @@ export const AuthProvider = ({
           description: resData.data.message,
         });
         if (
-          resData.data.user.first_name.length > 0 &&
-          resData.data.user.last_name.length > 0
+          resData.data.user.first_name &&
+          resData.data.user.last_name
         ) {
           router.push("/dashboard");
         } else {
