@@ -27,6 +27,7 @@ import { updateUserAction } from "@/actions/user-actions";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { useFormStatus } from "react-dom";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 const formSchema = z.object({
   first_name: z.string().min(2).max(255),
@@ -111,7 +112,9 @@ export default function BasicForm() {
             <FormItem>
               <FormLabel className="text-xs">Personal phone number</FormLabel>
               <FormControl>
-                <Input
+                <PhoneInput
+                  defaultCountry="US"
+                  international={true}
                   className="w-full"
                   type="tel"
                   placeholder="+18903748590"
@@ -204,7 +207,9 @@ export default function BasicForm() {
                   </SelectItem>
                   <SelectItem value="Cook Islands">Cook Islands</SelectItem>
                   <SelectItem value="Costa Rica">Costa Rica</SelectItem>
-                  <SelectItem value="Cote D'ivoire">Cote D&apos;ivoire</SelectItem>
+                  <SelectItem value="Cote D'ivoire">
+                    Cote D&apos;ivoire
+                  </SelectItem>
                   <SelectItem value="Croatia">Croatia</SelectItem>
                   <SelectItem value="Cuba">Cuba</SelectItem>
                   <SelectItem value="Cyprus">Cyprus</SelectItem>
