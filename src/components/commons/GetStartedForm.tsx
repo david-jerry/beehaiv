@@ -41,7 +41,7 @@ export default function GetStartedForm() {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log(data.email);
     setGetStartedEmail(data.email);
-    router.push("/accounts/login")
+    router.push("/accounts/signup")
   };
   return (
     <Form {...form}>
