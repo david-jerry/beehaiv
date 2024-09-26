@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import ErrorMessage from "@/components/commons/ErrorMessage";
 import { useFormStatus } from "react-dom";
+import useGeneralStore from "@/hooks/generalStore";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -29,18 +30,25 @@ const formSchema = z.object({
 
 export default function SignUpForm() {
   const [pending, startTransition] = React.useTransition();
+  const setGetStartedEmail = useGeneralStore(
+    (state: any) => state.setGetStartedEmail
+  );
+  const getStartedEmail = useGeneralStore(
+    (state: any) => state.getStartedEmail
+  );
 
   const { register, error } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: getStartedEmail ? getStartedEmail : "",
       password: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => await register(values));
+    setGetStartedEmail(null);
   };
 
   return (

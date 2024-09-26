@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 const useGeneralStore = create((set, get) => ({
   opened: false,
+  getStartedEmail: null,
   openSubmenu: false,
   mobileNavOpened: false,
   content: null,
@@ -9,6 +10,7 @@ const useGeneralStore = create((set, get) => ({
   openPin: false,
   showDashMobileNav: false,
 
+  setGetStartedEmail: (email: string | null) => set({ getStartedEmail: email }),
   setMobileNavOpened: (status: boolean) => set({ mobileNavOpened: status }),
   setShowDashMobileNav: (status: boolean) => set({ showDashMobileNav: status }),
   setOpenPin: (status: boolean) => set({ openPin: status }),

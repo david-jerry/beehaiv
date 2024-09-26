@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import useGeneralStore from "@/hooks/generalStore";
 
 const FormSchema = z.object({
   email: z
@@ -26,6 +27,9 @@ const FormSchema = z.object({
 });
 
 export default function GetStartedForm() {
+  const setGetStartedEmail = useGeneralStore(
+    (state: any) => state.setGetStartedEmail
+  );
   const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -36,6 +40,7 @@ export default function GetStartedForm() {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log(data.email);
+    setGetStartedEmail(data.email);
     router.push("/accounts/login")
   };
   return (
