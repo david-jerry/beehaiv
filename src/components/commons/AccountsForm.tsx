@@ -20,7 +20,7 @@ export default function AccountsForm({
   footer: any;
 }) {
   return (
-    <Card className="md:min-w-md max-w-2xl w-screen flex flex-col items-center space-y-4 md:space-y-8">
+    <Card className="md:min-w-md max-w-2xl w-full flex flex-col items-center space-y-4 md:space-y-8">
       <CardHeader className="flex flex-col items-center text-center">
         <CardTitle className="text-2xl md:text-4xl py-2.5">{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
