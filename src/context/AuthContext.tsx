@@ -113,6 +113,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.log(resData.data.user);
         setUser(resData.data.user);
         toast.success("Login Successful");
+        setError(null);
         if (
           resData.data.user.first_name &&
           resData.data.user.address &&
@@ -144,6 +145,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const resData = await signupAction(validatedData);
 
       if (resData.data) {
+        setError(null);
         toast.success("Registration Successful");
         setUser(resData.data.user);
         router.push("/accounts/confirm-code");
@@ -160,9 +162,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       // await axios.get(`${baseUrl}/auth/logout`);
       setUser(null);
+      setError(null);
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
-      router.push("/");
+      router.push("/accounts/login");
       toast.success("Logged out successfully");
     } catch (error) {
       toast.error("Error logging out");
@@ -176,6 +179,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         "Authorization"
       ] = `Bearer ${res.data.access_token}`;
       localStorage.setItem("token", res.data.access_token);
+      setError(null);
     } catch (error) {
       setError("Error refreshing access token");
     }
@@ -192,11 +196,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!res!.error) {
         if (res.status === 200) {
           setUser(res.data);
+          setError(null);
         } else if (res.status === 401) {
           router.push("/accounts/login");
         }
       } else if (res.error === "Token is invalid or expired") {
-        setUser(null)
+        setUser(null);
+        setError(null);
         localStorage.removeItem("token");
         delete axios.defaults.headers.common["Authorization"];
         router.push("/accounts/login");
