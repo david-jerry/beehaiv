@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useFormStatus } from "react-dom";
 import { z } from "zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import ErrorMessage from "@/components/commons/ErrorMessage";
+import { usePathname, useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -24,7 +25,9 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
-  const { login, error } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { login, error, user, getUser } = useAuth();
   const [pending, startTransition] = React.useTransition();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,8 +38,22 @@ export default function LoginForm() {
     },
   });
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      async () => getUser();
+    }
+    if (user && !user.first_name && token) {
+      router.push("/accounts/onboarding/basic");
+    } else if (user && !user.address && token) {
+      router.push("/accounts/onboarding/business-detail");
+    } else if (user && !user.business_profiles && token) {
+      router.push("/accounts/onboarding/complete");
+    }
+  }, [user]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    startTransition(async() => await login(values))
+    startTransition(async () => await login(values));
   };
 
   return (
@@ -82,7 +99,9 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Submit"}</Button>
+        <Button disabled={pending} type="submit">
+          {pending ? "Submitting..." : "Submit"}
+        </Button>
       </form>
     </Form>
   );

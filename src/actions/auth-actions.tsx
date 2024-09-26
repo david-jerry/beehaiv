@@ -90,8 +90,10 @@ export const verificationCodeAction = async (
       `${baseUrl}/auth/verify-email/${validatedData.code}`
     );
 
+    console.log(response.data)
+
     // Check if the response is successful
-    if (response.status === 200) {
+    if (response.data.status === 200) {
       const userEmail = response.data.user.email;
 
       // Send welcome email via Resend
@@ -125,12 +127,13 @@ export const signupAction = async (data: z.infer<typeof signUpFormSchema>) => {
     // Validate the data using the schema
     const validatedData = signUpFormSchema.parse(data);
     const ip_address = await IP();
+    const extractedIp = ip_address.split(":").pop();
 
     // Perform the request to signup a new user
     const response = await axios.post(
       `${baseUrl}/auth/signup?domain=${encodeURIComponent(
         domain
-      )}&ip_address=${encodeURIComponent(ip_address)}`,
+      )}&ip_address=${encodeURIComponent(extractedIp!)}`,
       validatedData
     );
 

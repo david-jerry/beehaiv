@@ -28,6 +28,7 @@ const userAddressSchema = z.object({
 
 const businessFormSchema = z.object({
   business_name: z.string().min(2).max(255),
+  business_id: z.string().min(6).max(25),
   deposit_size: z.string().min(2).max(255),
   tax_id: z.string().min(2).max(50),
   asset_source_description: z.string().min(6).max(255),

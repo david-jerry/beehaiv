@@ -30,6 +30,7 @@ import {
 
 const formSchema = z.object({
   business_name: z.string().min(2).max(255),
+  business_id: z.string().min(6).max(25),
   deposit_size: z.string().min(2).max(255),
   tax_id: z.string().min(2).max(50),
   asset_source_description: z.string().min(6).max(255),
@@ -41,20 +42,11 @@ const formSchema = z.object({
   founding_date: z.string().min(0),
 });
 
-const getToken = () => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
-    return token ? `Bearer ${token}` : null;
-  }
-  return null; // Return null or handle case for server-side
-};
-
 export default function BusinessForm() {
   const [pending, startTransition] = React.useTransition();
-  const { user } = useAuth();
-  const token = getToken();
-
+  const { user, logout } = useAuth();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,6 +79,7 @@ export default function BusinessForm() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const token = localStorage.getItem("token");
     console.log(token);
 
     if (!token) {
@@ -103,7 +96,8 @@ export default function BusinessForm() {
         toast.error("Error", {
           description: res.error,
         });
-        router.push("/accounts/login");
+        await logout()
+        router.push("/accounts/login")
       } else {
         toast.error("Error", {
           description: res.error,
@@ -124,6 +118,24 @@ export default function BusinessForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs">Legal Name *</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full"
+                  type="text"
+                  placeholder="-"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="business_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs">Business ID *</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"

@@ -75,19 +75,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const isDashboardRoute = pathname.startsWith("/dashboard");
+
     if (
       // (user && !user.first_name) ||
-      (user && !user.first_name && isDashboardRoute)
+      user &&
+      !user.first_name &&
+      isDashboardRoute
     ) {
       router.push("/accounts/onboarding/basic"); // Redirect to onboarding if necessary
     } else if (
       // (user && !user.address) ||
-      (user && !user.address && isDashboardRoute)
+      user &&
+      !user.address &&
+      isDashboardRoute
     ) {
       router.push("/accounts/onboarding/business-detail");
     } else if (
       // (user && !user.business_profiles[0]) ||
-      (user && !user.business_profiles && isDashboardRoute)
+      user &&
+      !user.business_profiles &&
+      isDashboardRoute
     ) {
       router.push("/accounts/onboarding/complete");
     }
@@ -108,12 +115,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         toast.success("Login Successful");
         if (
           resData.data.user.first_name &&
-          resData.data.user.last_name &&
-          resData.data.user.business[0]
+          resData.data.user.address &&
+          resData.data.user.business_profiles[0]
         ) {
           router.push("/dashboard");
-        } else {
-          router.push("/accounts/onboarding");
+        } else if (!resData.data.user.first_name) {
+          router.push("/accounts/onboarding/basic");
+        } else if (!resData.data.user.address) {
+          router.push("/accounts/onboarding/business-detail");
+        } else if (!resData.data.user.business_profiles[0]) {
+          router.push("/accounts/onboarding/complete");
         }
       } else {
         setError(resData.error.message);
@@ -147,7 +158,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await axios.get(`${baseUrl}/auth/logout`);
+      // await axios.get(`${baseUrl}/auth/logout`);
       setUser(null);
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
@@ -177,7 +188,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         router.push("/accounts/login");
       }
       const res = await getUserAction(token!);
-      console.log(res)
+      console.log(res);
       if (!res!.error) {
         if (res.status === 200) {
           setUser(res.data);
@@ -185,6 +196,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           router.push("/accounts/login");
         }
       } else if (res.error === "Token is invalid or expired") {
+        setUser(null)
+        localStorage.removeItem("token");
+        delete axios.defaults.headers.common["Authorization"];
         router.push("/accounts/login");
       }
     } catch (error) {
