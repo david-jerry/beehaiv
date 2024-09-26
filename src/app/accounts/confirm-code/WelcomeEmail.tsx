@@ -16,7 +16,7 @@ interface KoalaWelcomeEmailProps {
   userFirstname: string;
 }
 
-const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "";
+const baseUrl = process.env.BASE_URL ? `${process.env.BASE_URL}` : "";
 
 export const WelcomeEmail = ({ userFirstname }: KoalaWelcomeEmailProps) => (
   <Tailwind
@@ -84,7 +84,7 @@ export const WelcomeEmail = ({ userFirstname }: KoalaWelcomeEmailProps) => (
         />
         <Text style={paragraph}>Hi {userFirstname},</Text>
         <Text style={paragraph}>
-          Welcome to Beehaiv, he one financial technology to manage all your
+          Welcome to Beehaiv, the one financial technology to manage all your
           business needs.
         </Text>
         <Section className={"py-4"}>

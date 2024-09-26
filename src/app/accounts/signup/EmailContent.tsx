@@ -18,7 +18,7 @@ interface AWSVerifyEmailProps {
   verificationCode?: string;
 }
 
-const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "";
+const baseUrl = process.env.BASE_URL ? `${process.env.BASE_URL}` : "";
 
 export default function VerifyEmail({ verificationCode }: AWSVerifyEmailProps) {
   return (
