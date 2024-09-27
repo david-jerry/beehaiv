@@ -250,7 +250,7 @@ export const resetPasswordAction = async (
       }),
     });
     return {
-      data: response.data.message
+      data: response.data.message,
     };
   } catch (error: any) {
     // Handle the error and return the message
@@ -281,6 +281,33 @@ export const resetPasswordVerifyCodeAction = async (
     };
   } catch (error: any) {
     // Handle the error and return the message
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const refreshTokenAction = async () => {
+  try {
+    const res = await axios.get(`${baseUrl}/auth/refresh-token`);
+    if (res.status === 200) {
+      return { data: res };
+    } else {
+      return {
+        error: res.data.message
+      }
+    }
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const logoutAction = async () => {
+  try {
+    await axios.get(`${baseUrl}/auth/logout`);
+  } catch (error: any) {
     return {
       error: error.response?.data?.message || error.message,
     };
