@@ -43,11 +43,16 @@ const formSchema = z.object({
   sort_code: z.string().optional(),
 });
 
+const transferSchema = z.object({
+  account_number: z.string().min(4).max(20),
+});
+
 export default function TransferForm() {
   const [domestic, setDomestic] = React.useState(true);
   const [step, setStep] = React.useState(0);
   const setOpenPin = useGeneralStore((state: any) => state.setOpenPin);
   const [data, setData] = React.useState<any[]>([]);
+  const [accountNumber, setAccountNumber] = React.useState("");
   const { user } = useAuth();
 
   const cards = useGetCard(user!);
@@ -55,6 +60,10 @@ export default function TransferForm() {
   React.useEffect(() => {
     setData(cards);
   }, [cards]);
+
+  const tForm = useForm<z.infer<typeof transferSchema>>({
+    resolver: zodResolver(transferSchema),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,9 +75,13 @@ export default function TransferForm() {
     },
   });
 
+  const onAccSubmit = async (values: z.infer<typeof transferSchema>) => {
+    setAccountNumber(values.account_number);
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     setOpenPin(true);
+    console.log(values);
   };
 
   return (
@@ -95,36 +108,59 @@ export default function TransferForm() {
       </div>
 
       {step === 0 && (
-        <div className="w-full p-2 rounded-md border border-gray-300">
-          <Select>
-            <SelectTrigger className="shadow-none justify-between h-fit w-full flex items-center py-1.5 appearance-none border-0 focus:ring-0 focus:outline-0 focus:outline-none">
-              <span className="text-xs flex items-center">
-                <SiMastercard className="h-5 w-5" />
-                <span className="flex w-fit">Debit</span>
-              </span>
-              <Separator orientation="vertical" className="h-9 bg-gray-300" />
-              <SelectValue
-                className="font-bold text-base w-fit gap-2 space-x-2"
-                placeholder={"Select a debit card"}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {data.map((card, index) => (
-                <SelectItem key={index} value={card.bank_id} className="w-full">
-                  <span className="text-xs flex flex-col justify-center items-center">
-                    <span className="text-xs">
-                      **** {card.card_number.slice(-4)}
-                    </span>
-                    {/* <span className="flex w-fit">Manuel Inc.</span> */}
-                  </span>
-                  <span className="flex font-bold text-sm w-fit">
-                    ${card.bal}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <Form {...tForm}>
+          <form
+            onSubmit={tForm.handleSubmit(onAccSubmit)}
+            className="w-full p-2 rounded-md border border-gray-300"
+          >
+            <FormField
+              control={tForm.control}
+              name="account_number"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="shadow-none justify-between h-fit w-full flex items-center py-1.5 appearance-none border-0 focus:ring-0 focus:outline-0 focus:outline-none">
+                      <span className="text-xs flex items-center">
+                        <SiMastercard className="h-5 w-5" />
+                        <span className="flex w-fit">Debit</span>
+                      </span>
+                      <Separator
+                        orientation="vertical"
+                        className="h-9 bg-gray-300"
+                      />
+                      <SelectValue
+                        className="font-bold text-base w-fit gap-2 space-x-2"
+                        placeholder={"Select a debit card"}
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {data.map((card, index) => (
+                        <SelectItem
+                          key={index}
+                          value={card.bank_id}
+                          className="w-full"
+                        >
+                          <span className="text-xs flex flex-col justify-center items-center">
+                            <span className="text-xs">
+                              **** {card.card_number.slice(-4)}
+                            </span>
+                            {/* <span className="flex w-fit">Manuel Inc.</span> */}
+                          </span>
+                          <span className="flex font-bold text-sm w-fit">
+                            ${card.bal}
+                          </span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       )}
 
       <Form {...form}>

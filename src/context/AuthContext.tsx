@@ -141,7 +141,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (resData.data) {
         setError(null);
         toast.success("Registration Successful");
-        setUser(resData.data.user);
         router.push("/accounts/confirm-code");
       } else {
         setError(resData.error);

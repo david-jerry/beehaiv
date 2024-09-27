@@ -40,10 +40,10 @@ export default function ForgotPasswordForm() {
         });
       } else {
         toast.error("Reset Email Failed", {
-          description: res.error
-        })
+          description: res.error,
+        });
       }
-      form.reset()
+      form.reset();
     });
   };
 
@@ -63,7 +63,7 @@ export default function ForgotPasswordForm() {
                 <Input
                   className="w-full"
                   type="email"
-                  placeholder="johndoe@mail.com"
+                  placeholder="example@mail.com"
                   {...field}
                 />
               </FormControl>

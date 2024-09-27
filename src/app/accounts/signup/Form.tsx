@@ -15,9 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-import { signupAction } from "@/actions/auth-actions";
-import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import ErrorMessage from "@/components/commons/ErrorMessage";
 import useGeneralStore from "@/hooks/generalStore";
@@ -68,7 +65,7 @@ export default function SignUpForm() {
                 <Input
                   className="w-full"
                   type="email"
-                  placeholder="johndoe@mail.com"
+                  placeholder="example@mail.com"
                   {...field}
                 />
               </FormControl>

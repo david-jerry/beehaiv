@@ -74,7 +74,7 @@ export default function LoginForm() {
                 <Input
                   className="w-full"
                   type="email"
-                  placeholder="johndoe@mail.com"
+                  placeholder="example@mail.com"
                   {...field}
                 />
               </FormControl>
