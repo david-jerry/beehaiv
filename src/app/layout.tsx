@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Cookies from "@/components/commons/Cookies";
 import { AuthProvider } from "@/context/AuthContext";
+import BackHome from "@/components/commons/BackHome";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body
+          className={`relative ${inter.className} w-screen overflow-x-hidden`}
+        >
+          <BackHome />
           {children}
           <Toaster />
           <Cookies />

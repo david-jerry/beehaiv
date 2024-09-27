@@ -24,7 +24,10 @@ const formSchema = z.object({
 
 export default function PinForm() {
   const router = useRouter();
-    const setOpenPin = useGeneralStore((state: any) => state.setOpenPin);
+  const setOpenPin = useGeneralStore((state: any) => state.setOpenPin);
+  const transferDetails = useGeneralStore(
+    (state: any) => state.transferDetails
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,6 +38,7 @@ export default function PinForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setOpenPin(false);
+    console.log(transferDetails);
     router.push("/dashboard");
   };
 
@@ -54,7 +58,7 @@ export default function PinForm() {
                 <Input
                   className="w-full"
                   type="number"
-                  placeholder="********"
+                  placeholder="****"
                   {...field}
                 />
               </FormControl>

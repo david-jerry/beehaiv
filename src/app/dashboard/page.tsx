@@ -25,8 +25,8 @@ export default function Dashboard() {
   return (
     <section className="flex flex-col items-start gap-6 py-4">
       <h1 className="text-3xl font-bold w-full">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        <div className="md:col-span-3 lg:col-span-2 xl:col-span-3 w-full space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full h-fit">
+        <div className="md:col-span-3 lg:col-span-2 xl:col-span-3 w-full space-y-4 flex flex-col">
           <div className="h-fit relative rounded-md overflow-hidden p-4 bg-yellow-600 flex flex-col w-full">
             <div className="rounded-full w-32 aspect-square absolute -bottom-16 -right-16 z-0 bg-gray-300/60"></div>
             <div className="rounded-full w-28 aspect-square absolute -bottom-16 -right-16 z-0 bg-gray-300/60"></div>

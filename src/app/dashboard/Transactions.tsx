@@ -102,7 +102,7 @@ export default function Transactions<TData, TValue>({
   });
 
   return (
-    <Card className="bg-gray-100 w-full">
+    <Card className="bg-gray-100 w-full flex-grow-0 flex">
       <CardHeader className="flex items-center gap-2 space-y-y-0 border-b py-4 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>Transactions</CardTitle>

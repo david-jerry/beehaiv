@@ -164,7 +164,7 @@ const AccountLinks = ({ reset }: { reset: any }) => {
       ) : (
         <>
           <FlyoutLink reset={reset} href="/dashboard">
-            {user!.first_name}
+            {user!.first_name || "Dashboard"}
           </FlyoutLink>
           <Button
             onClick={logout}

@@ -807,13 +807,13 @@ export function MyChart() {
                 />
               </linearGradient>
             </defs>
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={true} />
             <XAxis
               dataKey="date"
-              tickLine={false}
+              tickLine={true}
               tickMargin={8}
               minTickGap={32}
-              axisLine={false}
+              axisLine={true}
               tickFormatter={(value) => {
                 const date = new Date(value);
                 return date.toLocaleDateString("en-US", {
