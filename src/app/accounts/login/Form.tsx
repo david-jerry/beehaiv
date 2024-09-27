@@ -54,6 +54,7 @@ export default function LoginForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => await login(values));
+    form.reset();
   };
 
   return (

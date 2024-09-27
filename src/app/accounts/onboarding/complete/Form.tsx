@@ -104,6 +104,7 @@ export default function BusinessForm() {
         });
       }
     });
+    form.reset();
   };
 
   return (

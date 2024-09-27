@@ -28,27 +28,41 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import useGeneralStore from "@/hooks/generalStore";
+import { useAuth } from "@/context/AuthContext";
+import { getCard } from "@/hooks/usePosts";
 
 const formSchema = z.object({
-  bankName: z.string().min(0),
+  recipient_bank_name: z.string().min(0),
   amount: z.coerce.number().gte(10).positive(),
-  recipient: z.string().min(1, "You must provide a recipient account number"),
-  recipientName: z.string().min(1, "You must provide a recipient account name"),
-  sortCode: z.string().optional(),
+  recipient_account_number: z
+    .string()
+    .min(1, "You must provide a recipient account number"),
+  recipient_name: z
+    .string()
+    .min(1, "You must provide a recipient account name"),
+  sort_code: z.string().optional(),
 });
 
 export default function TransferForm() {
   const [domestic, setDomestic] = React.useState(true);
   const [step, setStep] = React.useState(0);
   const setOpenPin = useGeneralStore((state: any) => state.setOpenPin);
+  const [data, setData] = React.useState<any[]>([]);
+  const { user } = useAuth();
+
+  const cards = getCard(user!);
+
+  React.useEffect(() => {
+    setData(cards);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      bankName: "",
+      recipient_bank_name: "",
       amount: 10,
-      recipient: "",
-      recipientName: "",
+      recipient_account_number: "",
+      recipient_name: "",
     },
   });
 
@@ -91,24 +105,23 @@ export default function TransferForm() {
               <Separator orientation="vertical" className="h-9 bg-gray-300" />
               <SelectValue
                 className="font-bold text-base w-fit gap-2 space-x-2"
-                placeholder="10,000"
+                placeholder={"Select a debit card"}
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light" className="w-full">
-                <span className="text-xs flex flex-col justify-center items-center">
-                  <span className="text-xs">**** 8765</span>
-                  {/* <span className="flex w-fit">Manuel Inc.</span> */}
-                </span>
-                <span className="flex font-bold text-sm w-fit">$75,000</span>
-              </SelectItem>
-              <SelectItem value="dark" className="w-full">
-                <span className="text-xs flex flex-col justify-center items-center">
-                  <span className="text-xs">**** 2673</span>
-                  {/* <span className="flex w-fit">Amasigha Coutour</span> */}
-                </span>
-                <span className="flex font-bold text-sm w-fit">$3,500</span>
-              </SelectItem>
+              {data.map((card, index) => (
+                <SelectItem key={index} value={card.bank_id} className="w-full">
+                  <span className="text-xs flex flex-col justify-center items-center">
+                    <span className="text-xs">
+                      **** {card.card_number.slice(-4)}
+                    </span>
+                    {/* <span className="flex w-fit">Manuel Inc.</span> */}
+                  </span>
+                  <span className="flex font-bold text-sm w-fit">
+                    ${card.bal}
+                  </span>
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -152,7 +165,7 @@ export default function TransferForm() {
             <>
               <FormField
                 control={form.control}
-                name="bankName"
+                name="recipient_bank_name"
                 render={({ field }) => (
                   <FormItem className="-space-y-1.5">
                     <div className="relative mb-4 flex w-full flex-wrap items-stretch h-fit">
@@ -176,7 +189,7 @@ export default function TransferForm() {
               />
               <FormField
                 control={form.control}
-                name="recipient"
+                name="recipient_account_number"
                 render={({ field }) => (
                   <FormItem className="-space-y-1.5">
                     <div className="relative mb-4 flex w-full flex-wrap items-stretch h-fit">
@@ -200,7 +213,7 @@ export default function TransferForm() {
               />
               <FormField
                 control={form.control}
-                name="recipientName"
+                name="recipient_name"
                 render={({ field }) => (
                   <FormItem className="-space-y-1.5">
                     <div className="relative mb-4 flex w-full flex-wrap items-stretch h-fit">
@@ -228,7 +241,7 @@ export default function TransferForm() {
           {!domestic && step === 2 && (
             <FormField
               control={form.control}
-              name="sortCode"
+              name="sort_code"
               render={({ field }) => (
                 <FormItem className="-space-y-1.5">
                   <div className="relative mb-4 flex w-full flex-wrap items-stretch h-fit">

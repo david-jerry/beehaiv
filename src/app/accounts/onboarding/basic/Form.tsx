@@ -59,6 +59,7 @@ export default function BasicForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => await updateUserBio(values));
+    form.reset();
   };
 
   return (

@@ -15,48 +15,46 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
-import { verificationCodeAction } from "@/actions/auth-actions";
+import { resetPasswordVerifyCodeAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
 
 // Define the form schema
 const formSchema = z.object({
-  code: z.string().min(6).max(255),
+  new_password: z.string().min(6).max(255),
+  confirm_new_password: z.string().min(6).max(255),
 });
 
 // This component will retrieve the search parameters and pass them to the form
 function SearchParamsFormWrapper() {
   const searchParams = useSearchParams();
-  const code = searchParams.get("code");
+  const code = searchParams.get("token");
 
   return <ConfirmCodeForm code={code!} />;
 }
 
 // The actual form component receives the code from the wrapper
 function ConfirmCodeForm({ code }: { code: string }) {
-  const [ pending, startTransition ] = useTransition();
+  const [pending, startTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      code: code,
-    },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => {
-      const res = await verificationCodeAction(values);
+      const res = await resetPasswordVerifyCodeAction(values, code);
       if (res!.error) {
-        toast.error("Verification Error", {
+        toast.error("Reset Error", {
           description: res!.error,
         });
       } else if (res!.data) {
-        toast.success("Verification Successful", {
-          description: res.verified_already ? res!.data : "Already verified.",
+        toast.success("Reset Successful", {
+          description: res.data,
         });
-        router.push("/accounts/onboarding");
+        router.push("/accounts/login");
       }
-    })
+    });
     form.reset();
   };
 
@@ -68,15 +66,15 @@ function ConfirmCodeForm({ code }: { code: string }) {
       >
         <FormField
           control={form.control}
-          name="code"
+          name="new_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs">Confirmation Code</FormLabel>
+              <FormLabel className="text-xs">New Password</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"
-                  type="tel"
-                  placeholder={code || "4ebe76e1-a4a6-4866-bdee-97ce650e97a9"}
+                  type="password"
+                  placeholder="********"
                   {...field}
                 />
               </FormControl>
@@ -84,7 +82,27 @@ function ConfirmCodeForm({ code }: { code: string }) {
             </FormItem>
           )}
         />
-        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Confirm"}</Button>
+        <FormField
+          control={form.control}
+          name="confirm_new_password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs">Confirm Password</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full"
+                  type="password"
+                  placeholder="********"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button disabled={pending} type="submit">
+          {pending ? "Submitting..." : "Confirm"}
+        </Button>
       </form>
     </Form>
   );
@@ -98,7 +116,6 @@ export default function SuspenseConfirmCodeForm() {
     </Suspense>
   );
 }
-
 
 // "use client";
 

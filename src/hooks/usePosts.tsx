@@ -62,3 +62,25 @@ export const useGetPostsByDate = (
 
   return cachedPosts;
 };
+
+export const getCard = (
+  user: User
+) => {
+  const cachedCards = useMemo(() => {
+    const cards: Card[] = [];
+    if (user !== null) {
+      user.business_profiles.forEach((profile) => {
+        if (profile.bank_account && profile.bank_account.card) {
+          const card = {
+            bal: profile.bank_account.balance,
+            ...profile.bank_account.card,
+          };
+          cards.push(card);
+        }
+      });
+    }
+    return cards;
+  }, [user]);
+
+  return cachedCards;
+}

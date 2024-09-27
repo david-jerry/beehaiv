@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import VerifyEmail from "@/app/accounts/login/EmailContent";
 import WelcomeEmail from "@/app/accounts/confirm-code/WelcomeEmail";
 import { headers } from "next/headers";
+import PasswordResetEmail from "@/app/accounts/forgot-password/PasswordResetEmailContent";
 
 const resend = new Resend(process.env.RESEND_API);
 
@@ -23,12 +24,21 @@ const IP = async () => {
 };
 
 const loginFormSchema = z.object({
-  email: z.string().min(2).max(50),
+  email: z.string().email().min(2).max(250),
   password: z.string().min(1, "You must provide a password"),
 });
 
+const passwordResetFormSchema = z.object({
+  email: z.string().email().min(2).max(250),
+});
+
+const newPasswordFormSchema = z.object({
+  new_password: z.string().min(6).max(255),
+  confirm_new_password: z.string().min(6).max(255),
+});
+
 const signUpFormSchema = z.object({
-  email: z.string().min(2).max(50),
+  email: z.string().email().min(2).max(250),
   password: z.string().min(1, "You must provide a password"),
 });
 
@@ -90,7 +100,7 @@ export const verificationCodeAction = async (
       `${baseUrl}/auth/verify-email/${validatedData.code}`
     );
 
-    console.log(response.data)
+    console.log(response.data);
 
     // Check if the response is successful
     if (response.data.status === 200) {
@@ -205,6 +215,70 @@ export const transferPinAction = async (
         error: response?.data.message,
       };
     }
+  } catch (error: any) {
+    // Handle the error and return the message
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const resetPasswordAction = async (
+  data: z.infer<typeof passwordResetFormSchema>
+) => {
+  try {
+    const validatedData = passwordResetFormSchema.parse(data);
+
+    const response = await axios.post(
+      `${baseUrl}/auth/password-reset-request?domain=${encodeURIComponent(
+        domain
+      )}`,
+      validatedData
+    );
+    if (response.status !== 200) {
+      return {
+        error: response?.data?.message,
+      };
+    }
+    await resend.emails.send({
+      from: "[Beehaiv Technologies] - Password Reset Request <authority@beehaiv.jeremiahedavid.online>",
+      to: validatedData.email,
+      subject: "Reset Password",
+      text: `Copy this code: ${response.data.password_reset_code} to reset your password `,
+      react: PasswordResetEmail({
+        verificationCode: response.data.password_reset_code,
+      }),
+    });
+    return {
+      data: response.data.message
+    };
+  } catch (error: any) {
+    // Handle the error and return the message
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const resetPasswordVerifyCodeAction = async (
+  data: z.infer<typeof newPasswordFormSchema>,
+  code: string
+) => {
+  try {
+    const validatedData = newPasswordFormSchema.parse(data);
+
+    const response = await axios.post(
+      `${baseUrl}/auth/password-reset-confirm/${code}`,
+      validatedData
+    );
+    if (response.status !== 200) {
+      return {
+        error: response?.data?.message,
+      };
+    }
+    return {
+      data: response.data.message,
+    };
   } catch (error: any) {
     // Handle the error and return the message
     return {

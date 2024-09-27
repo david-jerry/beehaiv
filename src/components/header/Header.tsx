@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable react/no-unescaped-entities */
 
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../commons/Logo";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -9,9 +9,9 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa6";
 
 export default function Header() {
-  const { user, logout } = useAuth();
-  const setOpened = useGeneralStore((state: any) => state.setOpened);
-  const opened = useGeneralStore((state: any) => state.opened);
+  // const { user, logout } = useAuth();
+  // const setOpened = useGeneralStore((state: any) => state.setOpened);
+  // const opened = useGeneralStore((state: any) => state.opened);
   const setOpenSubmenu = useGeneralStore((state: any) => state.setOpenSubmenu);
   const openSubmenu = useGeneralStore((state: any) => state.openSubmenu);
   const resetMenu = useGeneralStore((state: any) => state.resetMenu);
@@ -138,32 +138,42 @@ export default function Header() {
 
 // for sign in and register buttons and link
 const AccountLinks = ({ reset }: { reset: any }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, getUser } = useAuth();
+
+  useEffect(() => {
+    async () => {
+      getUser();
+    };
+  }, [user]);
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 lg:gap-6 text-sm">
-      {user === null ? <>
-      <FlyoutLink reset={reset} href="/accounts/login">
-        Sign In
-      </FlyoutLink>
-      <FlyoutLink
-        reset={reset}
-        href={"/accounts/signup"}
-        className="hover:scale-95 text-center py-2.5 min-w-[126px] w-full lg:w-fit rounded font-bold bg-foreground duration-300 ease-in-out transition-all  text-background"
-      >
-        Get Started
-      </FlyoutLink>
-      </> :
-      <>
-      <FlyoutLink reset={reset} href="/dashboard">
-        {user!.first_name}
-      </FlyoutLink>
-      <Button
-        onClick={logout}
-        className="hover:scale-95 text-center py-2.5 min-w-[126px] w-full lg:w-fit rounded font-bold bg-red-700 duration-300 ease-in-out transition-all text-background"
-      >
-        Logout
-      </Button></>}
+      {user === null ? (
+        <>
+          <FlyoutLink reset={reset} href="/accounts/login">
+            Sign In
+          </FlyoutLink>
+          <FlyoutLink
+            reset={reset}
+            href={"/accounts/signup"}
+            className="hover:scale-95 text-center py-2.5 min-w-[126px] w-full lg:w-fit rounded font-bold bg-foreground duration-300 ease-in-out transition-all  text-background"
+          >
+            Get Started
+          </FlyoutLink>
+        </>
+      ) : (
+        <>
+          <FlyoutLink reset={reset} href="/dashboard">
+            {user!.first_name}
+          </FlyoutLink>
+          <Button
+            onClick={logout}
+            className="hover:scale-95 text-center py-2.5 min-w-[126px] w-full lg:w-fit rounded font-bold bg-red-700 duration-300 ease-in-out transition-all text-background"
+          >
+            Logout
+          </Button>
+        </>
+      )}
     </div>
   );
 };

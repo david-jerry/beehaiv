@@ -23,10 +23,12 @@ import {
   flexRender,
   getCoreRowModel,
 } from "@tanstack/react-table";
-import { useAllTransactions } from "@/hooks/useTransactions";
-import { transactions } from "@/data/Transactions";
+import { getTransactionsAction } from "@/actions/user-actions";
+import { useAuth } from "@/context/AuthContext";
+// import { useAllTransactions } from "@/hooks/useTransactions";
+// import { transactions } from "@/data/Transactions";
 
-export const data = transactions;
+// export const data = transactions;
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -67,8 +69,32 @@ interface DataTableProps<TData, TValue> {
 
 export default function Transactions<TData, TValue>({
   columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+}: {
+  columns: ColumnDef<TData, TValue>[];
+}) {
+  const { refreshAccess, user, setError } = useAuth();
+  const [data, setData] = React.useState<TData[]>([]);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (user !== null && !token === null) {
+      async () => {
+        await refreshAccess();
+      };
+    }
+    const trans = async () => {
+      const res = await getTransactionsAction(token!);
+      if (res.data) {
+        setData(res.data);
+        setError(null);
+      } else if (res.error) {
+        setData([]);
+        setError(res.error);
+      }
+    };
+    trans();
+  }, []);
+
   const table = useReactTable({
     data, //also good to use a fallback array that is defined outside of the component (stable reference)
     columns,

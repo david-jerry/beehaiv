@@ -26,6 +26,11 @@ import {
 
 import { type ChartConfig } from "@/components/ui/chart";
 
+interface DataProps {
+  date: string;
+  debits: string;
+  deposits: number;
+}
 const data = [
   {
     date: "2024-04-01",
@@ -667,6 +672,8 @@ const data = [
 ];
 
 import React from "react";
+import { getTransactionSummaryAction } from "@/actions/user-actions";
+import { useAuth } from "@/context/AuthContext";
 
 const chartConfig = {
   visitors: {
@@ -685,25 +692,53 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function MyChart() {
+  const { user, refreshAccess, setError } = useAuth()
   const [timeRange, setTimeRange] = React.useState("90d");
-  const filteredData = data.filter((item) => {
-    const date = new Date(item.date);
-    const now = new Date();
-    let daysToSubtract = 90;
-    if (timeRange === "30d") {
-      daysToSubtract = 30;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    } else if (timeRange === "180d") {
-      daysToSubtract = 180;
-    } else if (timeRange === "1y") {
-      daysToSubtract = 360;
-    } else if (timeRange === "2y") {
-      daysToSubtract = 720;
+  const [data, setData] = React.useState<DataProps[]>([]);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (user !== null && !token === null) {
+      async () => {
+        await refreshAccess();
+      };
     }
+    const trans = async () => {
+      const res = await getTransactionSummaryAction(token!);
+      console.log(res)
+      if (res.data) {
+        setData(res.data);
+        setError(null);
+      } else if (res.error) {
+        setData([]);
+        setError(res.error);
+      }
+    };
+    trans();
+  }, [])
+
+  const filteredData = React.useMemo(() => {
+    const timeRangeDaysMap: Record<
+      "30d" | "7d" | "180d" | "1y" | "2y",
+      number
+    > = {
+      "30d": 30,
+      "7d": 7,
+      "180d": 180,
+      "1y": 360,
+      "2y": 720,
+    };
+
+    // Check if timeRange is one of the valid keys, otherwise default to 90
+    const daysToSubtract =
+      timeRangeDaysMap[timeRange as keyof typeof timeRangeDaysMap] || 90;
+
+    const now = new Date();
     now.setDate(now.getDate() - daysToSubtract);
-    return date >= now;
-  });
+
+    return data.filter((item) => new Date(item.date) >= now);
+  }, [data, timeRange]);
+
   return (
     <Card className="bg-gray-100 ">
       <CardHeader className="flex items-center gap-2 space-y-y-0 border-b py-4 sm:flex-row">
@@ -807,8 +842,8 @@ export function MyChart() {
                         name}
                       <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
                         {(chartConfig[name as keyof typeof chartConfig]
-                          ?.label !== 'date' ||
-                          name !== 'date') &&
+                          ?.label !== "date" ||
+                          name !== "date") &&
                           new Intl.NumberFormat("en-US", {
                             style: "currency",
                             currency: "USD",

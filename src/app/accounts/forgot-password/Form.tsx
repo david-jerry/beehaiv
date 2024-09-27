@@ -15,6 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { resetPasswordAction } from "@/actions/auth-actions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -30,7 +32,19 @@ export default function ForgotPasswordForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    startTransition(async() => {})
+    startTransition(async () => {
+      const res = await resetPasswordAction(values);
+      if (res.data) {
+        toast.success("Email Sent", {
+          description: "A password reset code has been sent to your email",
+        });
+      } else {
+        toast.error("Reset Email Failed", {
+          description: res.error
+        })
+      }
+      form.reset()
+    });
   };
 
   return (
@@ -57,7 +71,9 @@ export default function ForgotPasswordForm() {
             </FormItem>
           )}
         />
-        <Button disabled={pending} type="submit">{pending ? "Submitting..." : "Reset password"}</Button>
+        <Button disabled={pending} type="submit">
+          {pending ? "Submitting..." : "Reset password"}
+        </Button>
       </form>
     </Form>
   );

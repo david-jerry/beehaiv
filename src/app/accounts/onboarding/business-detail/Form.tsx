@@ -51,6 +51,7 @@ export default function BusinessForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => await updateUserAddress(values));
+    form.reset();
   };
 
   return (

@@ -20,7 +20,6 @@ import { signupAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import ErrorMessage from "@/components/commons/ErrorMessage";
-import { useFormStatus } from "react-dom";
 import useGeneralStore from "@/hooks/generalStore";
 
 const formSchema = z.object({
@@ -49,6 +48,7 @@ export default function SignUpForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => await register(values));
     setGetStartedEmail(null);
+    form.reset();
   };
 
   return (

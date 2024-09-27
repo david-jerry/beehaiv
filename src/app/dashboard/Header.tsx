@@ -12,8 +12,10 @@ import { GrMoney } from "react-icons/gr";
 import { RiMenu4Line } from "react-icons/ri";
 import useGeneralStore from "@/hooks/generalStore";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
+  const { user, logout } = useAuth();
   const showDashMobileNav = useGeneralStore(
     (state: any) => state.showDashMobileNav
   );
@@ -66,7 +68,7 @@ export default function Header() {
           <span className="md:hidden lg:flex">Settings</span>
         </Link>
         <Button
-          onClick={() => {}}
+          onClick={() => logout()}
           className="bg-transparent shadow-none text-foreground text-left justify-start rounded-md duration-300 ease-in-out transition-all w-full p-2.5 hover:bg-foreground hover:text-background text-xs flex flex-row items-center gap-2.5"
         >
           <IoIosLogOut className="w-5 h-5" />
@@ -78,6 +80,7 @@ export default function Header() {
 }
 
 const MobileNavConcept = () => {
+  const { user, logout } = useAuth();
   return (
     <div className="z-50 rounded-md border-t-2 border-t-yellow-600 md:hidden flex flex-col p-4 fixed top-14 left-4 right-4 bg-gray-100 shadow gap-4">
       <div className="flex flex-col items-start space-y-2">
@@ -113,7 +116,7 @@ const MobileNavConcept = () => {
           <span className="md:hidden lg:flex">Settings</span>
         </Link>
         <Button
-          onClick={() => {}}
+          onClick={() => logout()}
           className="bg-transparent shadow-none text-foreground text-left justify-start rounded-md duration-300 ease-in-out transition-all w-full p-2.5 hover:bg-foreground hover:text-background text-xs flex flex-row items-center gap-2.5"
         >
           <IoIosLogOut className="w-5 h-5" />

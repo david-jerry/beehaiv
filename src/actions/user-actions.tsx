@@ -164,3 +164,63 @@ export const createBusinessAction = async (
     };
   }
 };
+
+export const getTransactionSummaryAction = async (token: string) => {
+  try {
+    const res = await axios.get(`${baseUrl}/transactions/summary`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.status !== 200) {
+      return {
+        error: res.data.message,
+      };
+    }
+    return { data: res.data };
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getTransactionsAction = async (token: string) => {
+  try {
+    const res = await axios.get(`${baseUrl}/transactions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.status !== 200) {
+      return {
+        error: res.data.message
+      }
+    }
+    return { data: res.data };
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+}
+
+export const getLoansAction = async (token: string) => {
+  try {
+    const res = await axios.get(`${baseUrl}/loans`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.status !== 200) {
+      return {
+        error: res.data.message,
+      };
+    }
+    return { data: res.data };
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.message || error.message,
+    };
+  }
+};

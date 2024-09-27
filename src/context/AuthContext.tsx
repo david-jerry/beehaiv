@@ -53,6 +53,7 @@ interface AuthContextType {
   updateUserBio: (data: z.infer<typeof userFormSchema>) => Promise<void>;
   updateUserAddress: (data: z.infer<typeof userAddressSchema>) => Promise<void>;
   error: string | null;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 // Create the context with a default value
@@ -74,31 +75,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // }, []);
 
   useEffect(() => {
+    setError(null);
     const isDashboardRoute = pathname.startsWith("/dashboard");
+
+    if (error === "Token is invalid or expired") {
+      async () => {
+        await refreshAccess();
+      };
+    }
 
     if (
       // (user && !user.first_name) ||
-      user &&
+      user !== null &&
       !user.first_name &&
       isDashboardRoute
     ) {
       router.push("/accounts/onboarding/basic"); // Redirect to onboarding if necessary
     } else if (
       // (user && !user.address) ||
-      user &&
+      user !== null &&
       !user.address &&
       isDashboardRoute
     ) {
       router.push("/accounts/onboarding/business-detail");
     } else if (
       // (user && !user.business_profiles[0]) ||
-      user &&
-      !user.business_profiles &&
+      user !== null &&
+      !user.business_profiles[0] &&
       isDashboardRoute
     ) {
       router.push("/accounts/onboarding/complete");
     }
-  }, [user, router, pathname]);
+  }, [user, router, pathname, error, setError, setUser]);
 
   const login = async (data: z.infer<typeof loginFormSchema>) => {
     try {
@@ -110,23 +118,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           "Authorization"
         ] = `Bearer ${resData.data.access_token}`;
         localStorage.setItem("token", resData.data.access_token);
-        console.log(resData.data.user);
-        setUser(resData.data.user);
         toast.success("Login Successful");
+        await getUser();
         setError(null);
-        if (
-          resData.data.user.first_name &&
-          resData.data.user.address &&
-          resData.data.user.business_profiles[0]
-        ) {
-          router.push("/dashboard");
-        } else if (!resData.data.user.first_name) {
-          router.push("/accounts/onboarding/basic");
-        } else if (!resData.data.user.address) {
-          router.push("/accounts/onboarding/business-detail");
-        } else if (!resData.data.user.business_profiles[0]) {
-          router.push("/accounts/onboarding/complete");
-        }
       } else {
         setError(resData.error.message);
         toast.error(resData.error.message);
@@ -160,7 +154,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      // await axios.get(`${baseUrl}/auth/logout`);
+      await axios.get(`${baseUrl}/auth/logout`);
       setUser(null);
       setError(null);
       localStorage.removeItem("token");
@@ -188,24 +182,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const getUser = async () => {
     try {
       const token = localStorage.getItem("token");
+      console.log(token)
       if (!token) {
         router.push("/accounts/login");
       }
       const res = await getUserAction(token!);
-      console.log(res);
+      console.log(res)
       if (!res!.error) {
         if (res.status === 200) {
           setUser(res.data);
+          const user_data = res.data;
+          if (
+            user_data &&
+            user_data.first_name &&
+            user_data.address &&
+            user_data.business_profiles[0]
+          ) {
+            router.push("/dashboard");
+          } else if (user_data && !user_data.first_name) {
+            router.push("/accounts/onboarding/basic");
+          } else if (user_data && !user_data.address) {
+            router.push("/accounts/onboarding/business-detail");
+          } else if (user_data && !user_data.business_profiles[0]) {
+            router.push("/accounts/onboarding/complete");
+          }
           setError(null);
         } else if (res.status === 401) {
           router.push("/accounts/login");
         }
-      } else if (res.error === "Token is invalid or expired") {
-        setUser(null);
-        setError(null);
+      } else if (res.error === "Token is invalid or expired" && user === null) {
+        // setUser(null);
+        setError(res.error);
         localStorage.removeItem("token");
         delete axios.defaults.headers.common["Authorization"];
         router.push("/accounts/login");
+      } else if (res.error === "Token is invalid or expired" && user !== null) {
+        // setUser(null);
+        setError(res.error);
+        localStorage.removeItem("token");
+        delete axios.defaults.headers.common["Authorization"];
+        await refreshAccess();
       }
     } catch (error) {
       setError("Error fetching user data");
@@ -232,6 +248,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           description: resData.error,
         });
       }
+
+      // if (resData.error === "Token is invalid or expired") {
+      //   await refreshAccess();
+      // }
     } catch (error: any) {
       setError(error.message);
     }
@@ -258,6 +278,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setError(resData.error);
         toast.error("Error updating address");
       }
+
+      // if (resData.error === "Token is invalid or expired") {
+      //   await refreshAccess();
+      // } 
     } catch (error: any) {
       setError(error.message);
     }
@@ -275,6 +299,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         updateUserBio,
         updateUserAddress,
         error,
+        setError,
       }}
     >
       {children}
