@@ -6,7 +6,7 @@ import ForgotPasswordForm from "./Form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Reset Password - BeeHaiv Finance Tech",
+  title: "Forgot Password - BeeHaiv Finance Tech",
   description:
     "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
 };

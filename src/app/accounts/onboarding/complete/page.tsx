@@ -4,6 +4,13 @@ import Link from "next/link";
 import React from "react";
 import BusinessForm from "./Form";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Business Information - BeeHaiv Finance Tech",
+  description:
+    "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
+};
 
 export default function BusinessDetail() {
   return (

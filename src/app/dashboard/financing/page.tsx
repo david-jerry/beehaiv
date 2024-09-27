@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Financing - BeeHaiv Finance Tech",
+  description:
+    "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
+};
 
 export default function Financing() {
   return (

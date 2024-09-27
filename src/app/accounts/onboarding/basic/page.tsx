@@ -4,6 +4,13 @@ import Link from "next/link";
 import React from "react";
 import BasicForm from "./Form";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Basic Information - Onboarding",
+  description:
+    "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
+};
 
 export default function Basic() {
   return (

@@ -13,6 +13,13 @@ import { MyChart } from "./Chart";
 import Transactions, { columns } from "./Transactions";
 import { transactions } from "@/data/Transactions";
 import Cards from "./Cards";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard - BeeHaiv Finance Tech",
+  description:
+    "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
+};
 
 export default function Dashboard() {
   return (

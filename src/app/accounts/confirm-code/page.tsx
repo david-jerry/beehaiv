@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import ConfirmCodeForm from "./Form";
 
 export const metadata: Metadata = {
-  title: "Reset Password - BeeHaiv Finance Tech",
+  title: "Verify Email Code - BeeHaiv Finance Tech",
   description:
     "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
 };
