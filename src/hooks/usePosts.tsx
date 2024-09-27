@@ -63,7 +63,7 @@ export const useGetPostsByDate = (
   return cachedPosts;
 };
 
-export const getCard = (
+export const useGetCard = (
   user: User
 ) => {
   const cachedCards = useMemo(() => {

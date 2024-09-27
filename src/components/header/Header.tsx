@@ -144,7 +144,7 @@ const AccountLinks = ({ reset }: { reset: any }) => {
     async () => {
       getUser();
     };
-  }, [user]);
+  }, [user, getUser]);
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 lg:gap-6 text-sm">

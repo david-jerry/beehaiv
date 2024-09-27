@@ -50,7 +50,7 @@ export default function LoginForm() {
     } else if (user && !user.business_profiles && token) {
       router.push("/accounts/onboarding/complete");
     }
-  }, [user]);
+  }, [user, getUser, router]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     startTransition(async () => await login(values));

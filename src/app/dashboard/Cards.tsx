@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/context/AuthContext";
-import { getCard } from "@/hooks/usePosts";
+import { useGetCard } from "@/hooks/usePosts";
 import Image from "next/image";
 import React from "react";
 import { FaRegCreditCard } from "react-icons/fa6";
@@ -23,11 +23,11 @@ export default function Cards() {
   const [data, setData] = React.useState<any[]>([]);
   const { user } = useAuth();
 
-  const cards = getCard(user!);
+  const cards = useGetCard(user!);
 
   React.useEffect(() => {
     setData(cards);
-  }, []);
+  }, [cards]);
 
   return (
     <>

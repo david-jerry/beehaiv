@@ -29,7 +29,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import useGeneralStore from "@/hooks/generalStore";
 import { useAuth } from "@/context/AuthContext";
-import { getCard } from "@/hooks/usePosts";
+import { useGetCard } from "@/hooks/usePosts";
 
 const formSchema = z.object({
   recipient_bank_name: z.string().min(0),
@@ -50,11 +50,11 @@ export default function TransferForm() {
   const [data, setData] = React.useState<any[]>([]);
   const { user } = useAuth();
 
-  const cards = getCard(user!);
+  const cards = useGetCard(user!);
 
   React.useEffect(() => {
     setData(cards);
-  }, []);
+  }, [cards]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

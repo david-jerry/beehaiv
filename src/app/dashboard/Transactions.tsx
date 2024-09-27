@@ -93,7 +93,7 @@ export default function Transactions<TData, TValue>({
       }
     };
     trans();
-  }, []);
+  }, [refreshAccess]);
 
   const table = useReactTable({
     data, //also good to use a fallback array that is defined outside of the component (stable reference)

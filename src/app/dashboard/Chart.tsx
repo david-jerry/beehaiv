@@ -705,7 +705,7 @@ export function MyChart() {
     }
     const trans = async () => {
       const res = await getTransactionSummaryAction(token!);
-      console.log(res)
+      console.log(res);
       if (res.data) {
         setData(res.data);
         setError(null);
@@ -715,7 +715,7 @@ export function MyChart() {
       }
     };
     trans();
-  }, [])
+  }, [refreshAccess]);
 
   const filteredData = React.useMemo(() => {
     const timeRangeDaysMap: Record<

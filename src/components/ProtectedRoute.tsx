@@ -39,7 +39,7 @@ const ProtectedRoute = ({
     };
 
     checkAuth();
-  }, [user]);
+  }, [user, logout, getUser]);
 
   return user ? children : <Loading />;
 };
