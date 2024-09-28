@@ -13,6 +13,10 @@ import { RiMenu4Line } from "react-icons/ri";
 import useGeneralStore from "@/hooks/generalStore";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/context/AuthContext";
+import {
+  getPrefLangCookie,
+  GoogleTranslate,
+} from "@/components/commons/GoogleTranslate";
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -22,6 +26,7 @@ export default function Header() {
   const setShowDashMobileNav = useGeneralStore(
     (state: any) => state.setShowDashMobileNav
   );
+
   return (
     <aside className="rounded-r-md shadow-md bg-gray-100 w-screen z-50 fixed top-0 left-0 md:w-[74px] lg:w-[234px] p-2 md:h-screen space-y-4 justify-between">
       <div className="flex items-center justify-between md:justify-normal md:flex-col md:items-start md:space-y-8">
@@ -57,7 +62,7 @@ export default function Header() {
         </Button>
       </div>
 
-      {showDashMobileNav && <MobileNavConcept />}
+      {showDashMobileNav && <MobileNavConcept state={setShowDashMobileNav} />}
 
       <div className="border-t p-2 md:py-6 absolute bottom-0 left-0 right-0 space-y-2 w-full hidden md:flex md:flex-col">
         <Link
@@ -74,15 +79,30 @@ export default function Header() {
           <IoIosLogOut className="w-5 h-5" />
           <span className="md:hidden lg:flex">Logout</span>
         </Button>
+        <GoogleTranslate prefLangCookie={getPrefLangCookie()} />
       </div>
     </aside>
   );
 }
 
-const MobileNavConcept = () => {
+import { useOnClickOutside } from "usehooks-ts";
+const MobileNavConcept = ({ state }: { state: any }) => {
   const { user, logout } = useAuth();
+  const ref = React.useRef(null);
+
+  const handleClickOutside = () => {
+    // Your custom logic here
+    console.log("clicked outside");
+    state(false);
+  };
+
+  useOnClickOutside(ref, handleClickOutside);
+
   return (
-    <div className="z-50 rounded-md border-t-2 border-t-yellow-600 md:hidden flex flex-col p-4 fixed top-14 left-4 right-4 bg-gray-100 shadow gap-4">
+    <div
+      ref={ref}
+      className="z-50 rounded-md border-t-2 border-t-yellow-600 md:hidden flex flex-col p-4 fixed top-14 left-4 right-4 bg-gray-100 shadow gap-4"
+    >
       <div className="flex flex-col items-start space-y-2">
         <Link
           href={"/dashboard"}
@@ -122,6 +142,7 @@ const MobileNavConcept = () => {
           <IoIosLogOut className="w-5 h-5" />
           <span className="md:hidden lg:flex">Logout</span>
         </Button>
+        <GoogleTranslate prefLangCookie={getPrefLangCookie()} />
       </div>
     </div>
   );

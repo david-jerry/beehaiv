@@ -148,6 +148,8 @@ const AccountLinks = ({ reset }: { reset: any }) => {
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 lg:gap-6 text-sm">
+      <GoogleTranslate prefLangCookie={getPrefLangCookie()} />
+
       {user === null ? (
         <>
           <FlyoutLink reset={reset} href="/accounts/login">
@@ -536,6 +538,7 @@ import useGeneralStore from "@/hooks/generalStore";
 import { useRouter } from "next/navigation";
 import { useFilteredPosts } from "@/hooks/usePosts";
 import { useAuth } from "@/context/AuthContext";
+import { getPrefLangCookie, GoogleTranslate } from "../commons/GoogleTranslate";
 
 const MobileSlideInMenu = ({
   opened,

@@ -13,7 +13,7 @@ export default function RootLayout({
     <ProtectedRoute>
       <section className="w-screen pl-0 md:pl-[74px] lg:pl-[234px] ">
         <Header />
-        <div className="w-full px-4 md:px-6 min-h-screen">{children}</div>
+        <div className="w-full px-4 md:px-6 min-h-screen pt-10 lg:pt-0">{children}</div>
         <OTPTransfer />
       </section>
     </ProtectedRoute>

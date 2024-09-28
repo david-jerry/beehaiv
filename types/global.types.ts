@@ -66,3 +66,8 @@ interface BasicInfoProps {
   website: string;
   description: string;
 }
+
+interface Window {
+  google: any;
+  googleTranslateElementInit: any;
+}

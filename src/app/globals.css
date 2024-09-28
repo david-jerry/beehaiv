@@ -63,4 +63,8 @@
   body {
     @apply bg-gray-200 text-foreground w-screen;
   }
+
+}
+.skiptranslate {
+  @apply !hidden;
 }
