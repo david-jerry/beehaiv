@@ -52,7 +52,7 @@ function ConfirmCodeForm({ code }: { code: string }) {
         toast.success("Reset Successful", {
           description: res.data,
         });
-        router.push("/accounts/login");
+        router.replace("/accounts/login");
       }
     });
     form.reset();
@@ -163,7 +163,7 @@ export default function SuspenseConfirmCodeForm() {
 //       toast.success("Verification", {
 //         description: res!.message,
 //       });
-//       router.push("/accounts/onboarding");
+//       router.replace("/accounts/onboarding");
 //     }
 //   };
 

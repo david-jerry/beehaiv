@@ -39,16 +39,20 @@ export default function LoginForm() {
   });
 
   useEffect(() => {
+    const check = async () => getUser();
     const token = localStorage.getItem("token");
     if (token) {
-      async () => getUser();
+      check()
+    }
+    if (user) {
+      router.replace("/dashboard")
     }
     if (user && !user.first_name && token) {
-      router.push("/accounts/onboarding/basic");
+      router.replace("/accounts/onboarding/basic");
     } else if (user && !user.address && token) {
-      router.push("/accounts/onboarding/business-detail");
+      router.replace("/accounts/onboarding/business-detail");
     } else if (user && !user.business_profiles && token) {
-      router.push("/accounts/onboarding/complete");
+      router.replace("/accounts/onboarding/complete");
     }
   }, [user, getUser, router]);
 

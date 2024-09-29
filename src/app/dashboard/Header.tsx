@@ -19,7 +19,7 @@ import {
 } from "@/components/commons/GoogleTranslate";
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const showDashMobileNav = useGeneralStore(
     (state: any) => state.showDashMobileNav
   );
@@ -79,20 +79,19 @@ export default function Header() {
           <IoIosLogOut className="w-5 h-5" />
           <span className="md:hidden lg:flex">Logout</span>
         </Button>
-        <GoogleTranslate prefLangCookie={getPrefLangCookie()} />
+        <GoogleTranslate />
       </div>
     </aside>
   );
 }
 
-import { useOnClickOutside } from "usehooks-ts";
+import { useIsMounted, useOnClickOutside } from "usehooks-ts";
 const MobileNavConcept = ({ state }: { state: any }) => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const ref = React.useRef(null);
+  const isMounted = useIsMounted();
 
   const handleClickOutside = () => {
-    // Your custom logic here
-    console.log("clicked outside");
     state(false);
   };
 
@@ -142,7 +141,7 @@ const MobileNavConcept = ({ state }: { state: any }) => {
           <IoIosLogOut className="w-5 h-5" />
           <span className="md:hidden lg:flex">Logout</span>
         </Button>
-        <GoogleTranslate prefLangCookie={getPrefLangCookie()} />
+        {useIsMounted() && <GoogleTranslate />}
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+/* The above code is a TypeScript React component for a website header. It includes functionality for
+both desktop and mobile navigation. Here is a breakdown of what the code is doing: */
 "use client";
 /* eslint-disable react/no-unescaped-entities */
 
@@ -8,10 +10,9 @@ import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa6";
 
+/* The above code is a TypeScript React component for a website header. Here is a summary of what the
+code is doing: */
 export default function Header() {
-  // const { user, logout } = useAuth();
-  // const setOpened = useGeneralStore((state: any) => state.setOpened);
-  // const opened = useGeneralStore((state: any) => state.opened);
   const setOpenSubmenu = useGeneralStore((state: any) => state.setOpenSubmenu);
   const openSubmenu = useGeneralStore((state: any) => state.openSubmenu);
   const resetMenu = useGeneralStore((state: any) => state.resetMenu);
@@ -27,6 +28,7 @@ export default function Header() {
   const [isHidden, setIsHidden] = React.useState(false);
   const [isColored, setIsColored] = React.useState(false);
   const { scrollY } = useScroll();
+  const isMounted = useIsMounted()
 
   useMotionValueEvent(scrollY, "change", (y) => {
     if (y > 150) {
@@ -64,9 +66,8 @@ export default function Header() {
         }}
         animate={isHidden ? "hidden" : "visible"}
         transition={{ duration: 0.25 }}
-        className={`w-screen fixed top-0 left-0 right-0 z-50 ${
-          (mobileNavOpened || isColored) && "border lg:border-0 bg-white"
-        }`}
+        className={`w-screen fixed top-0 left-0 right-0 z-50 ${(mobileNavOpened || isColored) && "border lg:border-0 bg-white"
+          }`}
       >
         <div className="container mx-auto flex items-center justify-between py-3.5">
           <div className="flex items-center md:space-x-4 lg:space-x-6">
@@ -105,17 +106,24 @@ export default function Header() {
           </div>
 
           <div>
-            <Button
-              type="button"
-              className="bg-transparent hover:bg-transparent text-foreground shadow-none md:hidden"
-              onClick={toggleMenu}
-            >
-              <MenuButtons opened={mobileNavOpened} />
-            </Button>
+            <div className="flex items-center space-x-2">
+              {isMounted() &&
+                <GoogleTranslate />
+              }
 
-            <div className="hidden md:block">
-              <AccountLinks reset={resetMenu} />
+              <Button
+                type="button"
+                className="bg-transparent hover:bg-transparent text-foreground shadow-none md:hidden"
+                onClick={toggleMenu}
+              >
+                <MenuButtons opened={mobileNavOpened} />
+              </Button>
+
+              <div className="hidden md:block">
+                <AccountLinks reset={resetMenu} />
+              </div>
             </div>
+
           </div>
         </div>
       </motion.header>
@@ -137,18 +145,30 @@ export default function Header() {
 // DESKTOP NAVIGATION
 
 // for sign in and register buttons and link
+/**
+ * The `AccountLinks` component in TypeScript React handles user authentication and displays different
+ * links based on the user's login status.
+ * @param  - The `AccountLinks` component takes a prop `reset` of type `any`. Within the component, it
+ * uses the `useAuth` hook to access the `user`, `logout`, and `getUser` functions related to
+ * authentication.
+ * @returns The `AccountLinks` component is being returned. It conditionally renders different links
+ * based on whether the `user` is null or not. If `user` is null, it displays "Sign In" and "Get
+ * Started" links. If `user` is not null, it displays the user's first name or "Dashboard" and a
+ * "Logout" button.
+ */
 const AccountLinks = ({ reset }: { reset: any }) => {
   const { user, logout, getUser } = useAuth();
 
   useEffect(() => {
-    async () => {
-      getUser();
+    const check = async () => {
+      await getUser();
     };
-  }, [user, getUser]);
+
+    check()
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 lg:gap-6 text-sm">
-      <GoogleTranslate prefLangCookie={getPrefLangCookie()} />
 
       {user === null ? (
         <>
@@ -205,7 +225,7 @@ const FlyoutLink = ({
       reset();
     }
 
-    router.push(href);
+    router.replace(href);
   };
 
   return (
@@ -218,19 +238,17 @@ const FlyoutLink = ({
         {/* link info */}
         <Button
           variant={"link"}
-          className={`${
-            className
-              ? className
-              : "group relative whitespace-nowrap hover:bg-transparent"
-          }`}
+          className={`${className
+            ? className
+            : "group relative whitespace-nowrap hover:bg-transparent"
+            }`}
           onClick={navigate}
         >
           {children}
           {/* TODO: underline animation on hover */}
           <span
-            className={`absolute -bottom-2 -left-2 -right-2 h-1 origin-center ${
-              !showFlyout ? "scale-x-0" : "scale-x-100"
-            } rounded-full bg-yellow-600 transition-transform duration-300 ease-out`}
+            className={`absolute -bottom-2 -left-2 -right-2 h-1 origin-center ${!showFlyout ? "scale-x-0" : "scale-x-100"
+              } rounded-full bg-yellow-600 transition-transform duration-300 ease-out`}
           />
         </Button>
 
@@ -539,6 +557,7 @@ import { useRouter } from "next/navigation";
 import { useFilteredPosts } from "@/hooks/usePosts";
 import { useAuth } from "@/context/AuthContext";
 import { getPrefLangCookie, GoogleTranslate } from "../commons/GoogleTranslate";
+import { useIsMounted } from "usehooks-ts";
 
 const MobileSlideInMenu = ({
   opened,
@@ -558,9 +577,8 @@ const MobileSlideInMenu = ({
   return (
     <>
       <aside
-        className={`z-10 h-screen flex flex-col fixed top-0 left-0 right-0 origin-right ${
-          !opened ? "scale-x-0" : "scale-x-100 lg:scale-x-0"
-        } transition-transform duration-300 ease-out bg-white px-4`}
+        className={`z-10 h-screen flex flex-col fixed top-0 left-0 right-0 origin-right ${!opened ? "scale-x-0" : "scale-x-100 lg:scale-x-0"
+          } transition-transform duration-300 ease-out bg-white px-4`}
       >
         {opened && (
           <>
@@ -626,9 +644,8 @@ const MobileSlideInSubMenu = ({
   return (
     <>
       <aside
-        className={`z-20 h-screen flex flex-col fixed top-0 left-0 right-0 origin-right ${
-          !openSubmenu ? "scale-x-0" : "scale-x-100 lg:scale-x-0"
-        } transition-transform duration-300 ease-out bg-white pt-6`}
+        className={`z-20 h-screen flex flex-col fixed top-0 left-0 right-0 origin-right ${!openSubmenu ? "scale-x-0" : "scale-x-100 lg:scale-x-0"
+          } transition-transform duration-300 ease-out bg-white pt-6`}
       >
         {children}
       </aside>

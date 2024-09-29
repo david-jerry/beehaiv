@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import ErrorMessage from "@/components/commons/ErrorMessage";
 import useGeneralStore from "@/hooks/generalStore";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -26,6 +27,8 @@ const formSchema = z.object({
 
 export default function SignUpForm() {
   const [pending, startTransition] = React.useTransition();
+  const router = useRouter();
+  const { login, error, register, user, getUser } = useAuth();
   const setGetStartedEmail = useGeneralStore(
     (state: any) => state.setGetStartedEmail
   );
@@ -33,7 +36,25 @@ export default function SignUpForm() {
     (state: any) => state.getStartedEmail
   );
 
-  const { register, error } = useAuth();
+  useEffect(() => {
+    const check = async () => getUser();
+    const token = localStorage.getItem("token");
+    if (token) {
+      check()
+    }
+    if (user) {
+      router.replace("/dashboard")
+    }
+    if (user && !user.first_name && token) {
+      router.replace("/accounts/onboarding/basic");
+    } else if (user && !user.address && token) {
+      router.replace("/accounts/onboarding/business-detail");
+    } else if (user && !user.business_profiles && token) {
+      router.replace("/accounts/onboarding/complete");
+    }
+  }, [user, getUser, router]);
+
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

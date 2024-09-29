@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const GetStarted = () => {
   const router = useRouter();
   const start = () => {
-    router.push("/accounts/onboarding/basic");
+    router.replace("/accounts/onboarding/basic");
   };
 
   return (

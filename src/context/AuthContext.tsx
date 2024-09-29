@@ -69,15 +69,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  //     // async () => {
-  //     //   await getUser();
-  //     // };
-  //   }
-  // }, []);
 
   useEffect(() => {
     setError(null);
@@ -95,23 +86,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       !user.first_name &&
       isDashboardRoute
     ) {
-      router.push("/accounts/onboarding/basic"); // Redirect to onboarding if necessary
+      router.replace("/accounts/onboarding/basic"); // Redirect to onboarding if necessary
     } else if (
       // (user && !user.address) ||
       user !== null &&
       !user.address &&
       isDashboardRoute
     ) {
-      router.push("/accounts/onboarding/business-detail");
+      router.replace("/accounts/onboarding/business-detail");
     } else if (
       // (user && !user.business_profiles[0]) ||
       user !== null &&
       !user.business_profiles[0] &&
       isDashboardRoute
     ) {
-      router.push("/accounts/onboarding/complete");
+      router.replace("/accounts/onboarding/complete");
     }
-  }, [user, router, pathname, error, setError, setUser]);
+  }, [user, error]);
 
   const login = async (data: z.infer<typeof loginFormSchema>) => {
     try {
@@ -130,7 +121,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setError(resData.error.message);
         toast.error(resData.error.message);
         if (resData.error.code) {
-          router.push("/accounts/confirm-code");
+          router.replace("/accounts/confirm-code");
         }
       }
     } catch (error: any) {
@@ -146,7 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (resData.data) {
         setError(null);
         toast.success("Registration Successful");
-        router.push("/accounts/confirm-code");
+        router.replace("/accounts/confirm-code");
       } else {
         setError(resData.error);
         toast.error("Registration Failed", { description: resData.error });
@@ -163,7 +154,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
-      router.push("/accounts/login");
+      if (pathname.startsWith("/dashboard/")) {
+        router.replace("/accounts/login");
+      } else {
+        router.replace("/");
+      }
       toast.success("Logged out successfully");
     } catch (error) {
       toast.error("Error logging out");
@@ -190,9 +185,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const getUser = async () => {
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
-      if (!token) {
-        router.push("/accounts/login");
+      if (!token && (pathname.startsWith("/dashboard/") || pathname.startsWith("/accounts/onboarding/"))) {
+        router.replace("/accounts/login");
       }
       const res = await getUserAction(token!);
       console.log(res);
@@ -206,24 +200,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             user_data.address &&
             user_data.business_profiles[0]
           ) {
-            router.push("/dashboard");
+            router.refresh();
           } else if (user_data && !user_data.first_name) {
-            router.push("/accounts/onboarding/basic");
+            router.replace("/accounts/onboarding/basic");
           } else if (user_data && !user_data.address) {
-            router.push("/accounts/onboarding/business-detail");
+            router.replace("/accounts/onboarding/business-detail");
           } else if (user_data && !user_data.business_profiles[0]) {
-            router.push("/accounts/onboarding/complete");
+            router.replace("/accounts/onboarding/complete");
           }
           setError(null);
         } else if (res.status === 401) {
-          router.push("/accounts/login");
+          if (pathname.startsWith("/dashboard/") || pathname.startsWith("/accounts/onboarding/")) router.replace("/accounts/login");
         }
       } else if (res.error === "Token is invalid or expired" && user === null) {
         // setUser(null);
         setError(res.error);
         localStorage.removeItem("token");
         delete axios.defaults.headers.common["Authorization"];
-        router.push("/accounts/login");
+        if (pathname.startsWith("/dashboard/") || pathname.startsWith("/accounts/onboarding/")) {
+          router.replace("/accounts/login");
+        }
       } else if (res.error === "Token is invalid or expired" && user !== null) {
         // setUser(null);
         setError(res.error);
@@ -233,7 +229,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       setError("Error fetching user data");
-      router.push("/accounts/login");
+      router.replace("/accounts/login");
     }
   };
 
@@ -242,14 +238,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const validatedData = userFormSchema.parse(data);
       const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/accounts/login");
+        router.replace("/accounts/login");
       }
       const resData = await updateUserAction(validatedData, user!.uid, token!);
       console.log(resData);
       if (resData.data) {
         setUser(resData.data);
         toast.success("User information updated");
-        router.push("/accounts/onboarding/business-detail");
+        router.replace("/accounts/onboarding/business-detail");
       } else {
         setError(resData.error);
         toast.error("Error updating user information", {
@@ -270,7 +266,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const validatedData = userAddressSchema.parse(data);
       const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/accounts/login");
+        router.replace("/accounts/login");
       }
 
       const resData = await updateUserAddressAction(
@@ -281,7 +277,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (resData.data) {
         setUser(resData.data);
         toast.success("Address updated successfully");
-        router.push("/accounts/onboarding/complete");
+        router.replace("/accounts/onboarding/complete");
       } else {
         setError(resData.error);
         toast.error("Error updating address");

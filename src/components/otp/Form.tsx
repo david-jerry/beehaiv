@@ -39,7 +39,7 @@ export default function PinForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setOpenPin(false);
     console.log(transferDetails);
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   return (

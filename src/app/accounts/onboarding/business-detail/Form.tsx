@@ -46,7 +46,7 @@ export default function BusinessForm() {
   });
 
   const backRoute = () => {
-    router.push("/accounts/onboarding/basic");
+    router.replace("/accounts/onboarding/basic");
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

@@ -1,9 +1,8 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
-import { FaRegCreditCard } from "react-icons/fa6";
-import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
 import { TbCreditCardPay, TbCreditCardRefund } from "react-icons/tb";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
@@ -11,19 +10,20 @@ import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import TransferForm from "./Form";
 import { MyChart } from "./Chart";
 import Transactions, { columns } from "./Transactions";
-import { transactions } from "@/data/Transactions";
 import Cards from "./Cards";
 import { Metadata } from "next";
+import { useIsMounted } from "usehooks-ts";
 
-export const metadata: Metadata = {
-  title: "Dashboard - BeeHaiv Finance Tech",
-  description:
-    "BeeHaiv is a financial technology for businesses with no commitment and zero paper-work.",
-};
-
+/**
+ * The Dashboard component in TypeScript React renders a dashboard layout with various sections and
+ * components.
+ * @returns The `Dashboard` component is being returned. It contains a section with various elements
+ * such as headings, grids, cards, buttons, charts, and forms arranged in a dashboard layout.
+ */
 export default function Dashboard() {
+  const isMounted = useIsMounted();
   return (
-    <section className="flex flex-col items-start gap-6 pb-4 ">
+    <section className="flex flex-col items-start gap-6 pt-6 lg:pt-0 pb-4 ">
       <h1 className="text-3xl font-bold w-full">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full h-fit">
         <div className="md:col-span-3 lg:col-span-2 xl:col-span-3 w-full space-y-4 flex flex-col">
@@ -42,7 +42,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <MyChart />
+          {isMounted() &&
+            <MyChart />
+          }
 
           <Transactions columns={columns} />
         </div>

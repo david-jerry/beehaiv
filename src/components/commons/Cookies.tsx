@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
 
+/* The above code is defining a TypeScript schema using the `zod` library for a form object. The schema
+specifies the shape of the form object with the following properties: */
 const FormSchema = z.object({
   key: z.string().min(4, "You must provide a key").default("consent"),
   essential: z.boolean().default(true),

@@ -26,6 +26,14 @@ const FormSchema = z.object({
     .email("This is not a valid email."),
 });
 
+/**
+ * The `GetStartedForm` function is a TypeScript React component that handles a form submission to set
+ * a user's email and navigate to a signup page.
+ * @returns The `GetStartedForm` component is being returned. It is a form component that allows users
+ * to input their email address and submit the form to set the email in the state and then navigate to
+ * the `"/accounts/signup"` route. The form includes an input field for the email address and a "Get
+ * Started" button for submission.
+ */
 export default function GetStartedForm() {
   const setGetStartedEmail = useGeneralStore(
     (state: any) => state.setGetStartedEmail
@@ -41,7 +49,7 @@ export default function GetStartedForm() {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log(data.email);
     setGetStartedEmail(data.email);
-    router.push("/accounts/signup")
+    router.replace("/accounts/signup")
   };
   return (
     <Form {...form}>

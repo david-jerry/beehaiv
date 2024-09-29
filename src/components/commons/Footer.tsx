@@ -6,6 +6,11 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "./Logo";
 
+/* The above code is a TypeScript React component for a website footer. It includes sections for
+different categories such as Products, Financing, BeeHaiv For, Resources, and Legal. Each section
+contains links related to the respective category. Additionally, there is a copyright notice, a
+separator component, and a disclaimer section at the end of the footer. The footer is styled using
+Tailwind CSS classes for layout and design. */
 export default function Footer() {
   return (
     <>

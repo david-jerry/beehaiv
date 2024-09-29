@@ -75,7 +75,7 @@ export default function BusinessForm() {
   });
 
   const backRoute = () => {
-    router.push("/accounts/onboarding/business-detail");
+    router.replace("/accounts/onboarding/business-detail");
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -83,7 +83,7 @@ export default function BusinessForm() {
     console.log(token);
 
     if (!token) {
-      router.push("/accounts/login");
+      router.replace("/accounts/login");
     }
     startTransition(async () => {
       const res = await createBusinessAction(values, token!);
@@ -91,13 +91,13 @@ export default function BusinessForm() {
         toast.success("Complete", {
           description: "You have completed your onboarding process",
         });
-        router.push("/dashboard");
+        router.replace("/dashboard");
       } else if (res.error === "Token is invalid or expired") {
         toast.error("Error", {
           description: res.error,
         });
         await logout()
-        router.push("/accounts/login")
+        router.replace("/accounts/login")
       } else {
         toast.error("Error", {
           description: res.error,

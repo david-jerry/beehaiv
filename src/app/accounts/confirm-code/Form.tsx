@@ -33,7 +33,7 @@ function SearchParamsFormWrapper() {
 
 // The actual form component receives the code from the wrapper
 function ConfirmCodeForm({ code }: { code: string }) {
-  const [ pending, startTransition ] = useTransition();
+  const [pending, startTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,7 +54,7 @@ function ConfirmCodeForm({ code }: { code: string }) {
         toast.success("Verification Successful", {
           description: res.verified_already ? res!.data : "Already verified.",
         });
-        router.push("/accounts/onboarding");
+        router.replace("/accounts/onboarding");
       }
     })
     form.reset();
@@ -146,7 +146,7 @@ export default function SuspenseConfirmCodeForm() {
 //       toast.success("Verification", {
 //         description: res!.message,
 //       });
-//       router.push("/accounts/onboarding");
+//       router.replace("/accounts/onboarding");
 //     }
 //   };
 

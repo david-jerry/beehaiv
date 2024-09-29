@@ -1,3 +1,8 @@
+/* The `interface User` in TypeScript is defining a structure for representing a user object. It
+specifies the properties that a `User` object should have and their respective data types. This
+interface outlines the details related to a user, including personal information, contact details,
+account status, joined date, and other relevant attributes. It helps in organizing and ensuring
+consistency in the representation of user details within the application's data model. */
 interface User {
   first_name?: string;
   last_name?: string;
@@ -23,6 +28,9 @@ interface User {
   loans: Loan[];
 }
 
+/* The `interface Loan` is defining a structure for representing a loan object in TypeScript. It
+specifies the properties that a `Loan` object should have and their respective data types. Here's a
+breakdown of the properties defined in the `Loan` interface: */
 interface Loan {
   uid: string;
   user_id: string;
@@ -36,6 +44,10 @@ interface Loan {
   updated_at: string; // ISO timestamp
 }
 
+/* The `interface VerifiedEmail` is defining a structure for representing a verified email object in
+TypeScript. It specifies the properties that a `VerifiedEmail` object should have and their
+respective data types. Here's a breakdown of the properties defined in the `VerifiedEmail`
+interface: */
 interface VerifiedEmail {
   email: string;
   uid: string;
@@ -43,6 +55,9 @@ interface VerifiedEmail {
   user_id: string;
 }
 
+/* The `interface Transaction` is defining a structure for representing a transaction object in
+TypeScript. It specifies the properties that a `Transaction` object should have and their respective
+data types. Here's a breakdown of the properties defined in the `Transaction` interface: */
 interface Transaction {
   amount: number;
   uid: string; // UUID
@@ -56,6 +71,12 @@ interface Transaction {
   updated_at: string; // ISO timestamp
 }
 
+/* The `interface BusinessProfile` is defining a structure for representing a business profile object
+in TypeScript. It specifies the properties that a `BusinessProfile` object should have and their
+respective data types. This interface outlines the details related to a business entity, including
+its name, contact information, registration details, financial information, and other relevant
+attributes. It also includes nested interfaces like `BankAccount` and `Card` to represent associated
+bank account and card details within the business profile. */
 interface BusinessProfile {
   uid: string; // UUID
   business_id: string;
@@ -78,6 +99,8 @@ interface BusinessProfile {
   bank_account: BankAccount;
 }
 
+/* The `interface BankAccount` and `interface Card` are defining structures for representing bank
+account and card details within a business profile object in TypeScript. */
 interface BankAccount {
   id: string; // UUID
   account_number: string;
@@ -91,6 +114,12 @@ interface BankAccount {
   card: Card;
 }
 
+/* The `interface Card` is defining a structure for representing card details within a business profile
+object in TypeScript. It specifies the properties that a `Card` object should have and their
+respective data types. This interface outlines the details related to a card associated with a
+business profile, including attributes like card number, card name, expiration date, CVV, and other
+relevant information. It helps in organizing and ensuring consistency in the representation of card
+details within the application's data model. */
 interface Card {
   id: string; // UUID
   card_number: string;

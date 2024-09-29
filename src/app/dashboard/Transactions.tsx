@@ -67,6 +67,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
+/* This code defines a React functional component named `Transactions` that takes generic types `TData`
+and `TValue` as props. The component fetches transaction data using the `getTransactionsAction`
+function and displays it in a table format using various UI components like `Card`, `Table`,
+`TableHeader`, `TableBody`, `TableRow`, `TableCell`, etc. */
 export default function Transactions<TData, TValue>({
   columns,
 }: {

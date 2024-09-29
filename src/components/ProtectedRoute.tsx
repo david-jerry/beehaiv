@@ -33,13 +33,13 @@ const ProtectedRoute = ({
         }
 
         if (user !== null && user.is_blocked) {
-          router.push("/accounts/blocked");
+          router.replace("/accounts/blocked");
         }
       }
     };
 
     checkAuth();
-  }, [user, logout, getUser]);
+  }, []);
 
   return user ? children : <Loading />;
 };
