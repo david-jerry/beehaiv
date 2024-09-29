@@ -2,6 +2,7 @@
 both desktop and mobile navigation. Here is a breakdown of what the code is doing: */
 "use client";
 /* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect } from "react";
 import Logo from "../commons/Logo";

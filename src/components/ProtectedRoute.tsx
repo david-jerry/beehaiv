@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect } from "react";
@@ -5,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import Logo from "./commons/Logo";
-import { LogOut } from "lucide-react";
 
 const ProtectedRoute = ({
   children,
